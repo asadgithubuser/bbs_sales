@@ -1,0 +1,168 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Product;
+use App\Models\Brand;
+use App\Models\User;
+use App\Models\Category;
+use App\Models\ShippingCategories;
+
+class ShippingConfigureController extends Controller
+{
+    public function index(Request $request){
+
+
+        $seller_id = $request->seller_id;
+        $brand_id = $request->brand_id;
+        $category_id = $request->category_id;
+        $shipping_type = $request->shipping_type;
+        $product_limit = $request->product_limit;
+
+        $products = Product::orderBy('id','asc');
+
+        if($seller_id == null && $brand_id == null && $category_id == null && $shipping_type == null && $product_limit == null){
+            $products = $products->take(0)->get();
+            $total_products = null;
+            $paginate = '';
+            $brands = Brand::get();
+            $categories = Category::get();
+            $sellers = User::where('user_type', '=', 'seller')->get();
+ 
+        }else{
+
+            if($seller_id != null){
+                $brandIds = array();
+                $catsIds = array();
+
+                $products = $products->where('user_id', $seller_id);
+                $bc_ids = Product::where('user_id', $seller_id)->select('category_id', 'brand_id')->get();
+
+                foreach($bc_ids as $data){
+                    array_push($brandIds, $data->brand_id);
+                    array_push($catsIds, $data->category_id);
+                }
+
+                $brands = Brand::whereIn('id', $brandIds)->get();
+                $sellers = User::where('user_type', '=', 'seller')->get();
+                $categories = Category::whereIn('id', $catsIds)->get();
+
+                
+                // $items = DB::table('products')
+                //         ->join('brands', 'brands.id', '=', 'products.brand_id')
+                //         ->join('categories', 'categories.id', '=', 'products.category_id')
+                //         ->where('products.user_id', $seller_id)
+                //         ->get();
+
+            }
+
+            if($brand_id != null){
+                $userIds = array();
+                $catIds = array();
+
+                $products = $products->where('brand_id', $brand_id);
+                $bu_ids = Product::where('brand_id', $brand_id)->select('category_id', 'user_id')->get();
+
+                foreach($bu_ids as $data){
+                    array_push($userIds, $data->user_id);
+                    array_push($catIds, $data->category_id);
+                }
+
+                $sellers = User::whereIn('id', $userIds)->get();
+                $brands = Brand::get();
+                $categories = Category::whereIn('id', $catIds)->get();
+            }
+
+            if($category_id != null){
+                $usercIds = array();
+                $brandcIds = array();
+
+                $products = $products->where('category_id', $category_id);
+                $bs_ids = Product::where('category_id', $category_id)->select('brand_id', 'user_id')->get();
+
+                foreach($bs_ids as $data){
+                    array_push($usercIds, $data->user_id);
+                    array_push($brandcIds, $data->brand_id);
+                }
+
+                $categories = Category::get();
+                $sellers = User::whereIn('id', $usercIds)->get();
+                $brands = Brand::whereIn('id', $brandcIds)->get();
+            }
+
+            if($shipping_type != null){
+                $products = $products->where('shipping_type', $shipping_type);
+                
+                $categories = Category::get();
+                $sellers = User::where('user_type', '=', 'seller')->get();
+                $brands = Brand::get();
+            }
+                
+        
+            $total_products = $products->get();
+
+            if($product_limit != null){
+                $categories = Category::get();
+                $sellers = User::where('user_type', '=', 'seller')->get();
+                $brands = Brand::get();
+                $paginate = '';
+                $products = $products->take($product_limit)->get();
+            }else{
+                // $paginate = 'paginate';
+                $products = $products->take(40)->get();
+                // $products = $products->paginate(40);
+            }
+
+    }
+    
+         
+        return view('backend.setup_configurations.shipping_cost.index', compact(['seller_id', 'brand_id', 'category_id', 'shipping_type', 'product_limit', 'brands','categories','total_products', 'products', 'sellers']));
+    }
+
+
+    public function costAssignToProducts(Request $request){
+        $productids = $request->products_id;
+        $catId = $request->catId;
+        $shipping_type = $request->shipping_type;
+        $flat_rate_cost = $request->flat_rate_cost;
+        $weight_based_cost = $request->weight_based_cost;
+
+        foreach($productids as $id){
+            if($shipping_type == 'free'){
+                $product = Product::find($id);
+                $product->shipping_type = 'free';
+                $product->shipping_cost = 0.00;
+                $product->save();
+            }else if($shipping_type == 0){
+                $product = Product::find($id);
+                $product->shipping_type = 'flat_rate';
+                $product->shipping_cost = $flat_rate_cost;
+                $product->save();
+            }else if($shipping_type == 'weight_based'){
+                $product = Product::find($id);
+                $product->shipping_type = 'weight_based';
+                $product->shipping_cost = $weight_based_cost;
+                $product->save();
+            }else if($catId != null ){
+                $shipCat = ShippingCategories::where('id', $catId)->get();
+
+                $product = Product::find($id);
+                $product->shipping_type = 'category_wise';
+                $product->shipping_cost = $shipCat[0]->id;
+                $product->save();
+            }
+            
+        }
+        return json_encode([
+            'status'=> 'success',
+            'catId'=> $catId,
+            'shipping_type'=> $shipping_type,
+            'flat_rate_cost'=> $flat_rate_cost,
+            'weight_based_cost'=> $weight_based_cost,
+        ]);
+    }
+
+
+
+}
