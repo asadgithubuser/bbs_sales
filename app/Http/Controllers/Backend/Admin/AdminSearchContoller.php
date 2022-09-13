@@ -114,6 +114,33 @@ class AdminSearchContoller extends Controller
         }
     }
 
+    public function searchAjax2(Request $request)
+    {     
+        $title = $request->data;
+        
+        $users = ServiceInventory::where(['can_download' => 1])
+        ->orWhere('title', 'like', '%' .$title. '%')
+        ->get();
+
+        if($users->count() > 0)
+        {
+            if ($request->ajax())
+            {
+                return $users;
+            }
+        }
+        else
+        {
+            if ($request->ajax())
+            {
+                return $users;
+            }
+        }
+    }
+
+
+
+
     public function ajaxSearch(Request $request, $type)
     {     
         $q = $request->q;
@@ -1162,8 +1189,9 @@ class AdminSearchContoller extends Controller
 
         if($type=='book')
         {
-            $users = ServiceInventory::where('can_download',1)->get();
-            
+            $users = ServiceInventory::where(['can_download' => 1])->get();
+             
+
             if($users->count())
             {
                 if ($request->ajax())

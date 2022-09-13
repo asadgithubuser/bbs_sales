@@ -26,7 +26,7 @@ class ServiceItemPriceController extends Controller
 
         if (Gate::allows('manage_services', $user)) 
         {
-            if (Gate::allows('service_item_prices', $user)) 
+            if (Gate::allows('service_item_prices', $user))
             {
                 $serviceItemPrices = ServiceItemPrice::orderBy('id')->paginate(15);
         
@@ -173,3 +173,9 @@ class ServiceItemPriceController extends Controller
         //
     }
 }
+
+
+
+
+
+

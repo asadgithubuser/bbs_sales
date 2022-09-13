@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
   
 use App\Http\Controllers\Api\RegisterController;
   
+
 Route::post('login', [RegisterController::class, 'login']);
 
 Route::middleware('auth:api')->group( function () {
@@ -56,9 +57,9 @@ Route::middleware('auth:api')->group( function () {
     Route::post('/update-tofsil-2-data/{id}',['uses'=>'Api\AgricultureController@updateTofsil2Data'])->name('update-tofsil-2-data');
     Route::post('/update-tofsil-3-data/{id}',['uses'=>'Api\AgricultureController@updateTofsil3Data'])->name('update-tofsil-3-data');
     Route::post('/update-tofsil-4-data/{id}',['uses'=>'Api\AgricultureController@updateTofsil4Data'])->name('update-tofsil-4-data');
-    Route::post('/update-tofsil-6-data/{id}',['uses'=>'Api\AgricultureController@updateTofsil6Data'])->name('update-tofsil-4-data');
-    Route::post('/update-tofsil-8-data/{id}',['uses'=>'Api\AgricultureController@updateTofsil8Data'])->name('update-tofsil-4-data');
-    Route::post('/update-tofsil-10-data/{id}',['uses'=>'Api\AgricultureController@updateTofsil10Data'])->name('update-tofsil-4-data');
-    Route::post('/update-tofsil-5-data/{id}',['uses'=>'Api\AgricultureController@updateTofsil5Data'])->name('update-tofsil-4-data');
+    Route::post('/update-tofsil-6-data/{id}',['uses'=>'Api\AgricultureController@updateTofsil6Data'])->name('update-tofsil-6-data');
+    Route::post('/update-tofsil-8-data/{id}',['uses'=>'Api\AgricultureController@updateTofsil8Data'])->name('update-tofsil-8-data');
+    Route::post('/update-tofsil-10-data/{id}',['uses'=>'Api\AgricultureController@updateTofsil10Data'])->name('update-tofsil-10-data');
+    Route::post('/update-tofsil-5-data/{id}',['uses'=>'Api\AgricultureController@updateTofsil5Data'])->name('update-tofsil-5-data');
     //end update
 });

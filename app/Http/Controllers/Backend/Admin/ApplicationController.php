@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
 use App\Models\TemplateSetting;
 use App\Models\Certificate;
+use App\Models\DollarConvertTaka;
 
 use Auth;
 use Illuminate\Support\Facades\Gate;
@@ -66,6 +67,8 @@ class ApplicationController extends Controller
         menuSubmenu('applications', 'allApplications');
         
         $user = Auth::user();
+        $dollarConvertToTaka = DollarConvertTaka::where('status', 'active')->first()->dollar_value;
+
 
         if (Gate::allows('manage_applications', $user)) 
         {
@@ -75,7 +78,7 @@ class ApplicationController extends Controller
                 {
                     $applications = Application::where('sr_user_id', Auth::user()->id)->with('receiverRole')->latest()->paginate(15);
                     
-                    return view('backend.serviceRecipient.application.index', compact('applications'));
+                    return view('backend.serviceRecipient.application.index', compact('applications','dollarConvertToTaka'));
                 }
                 elseif ((Auth::user()->role_id == 1) || (Auth::user()->role_id == 2))
                 {
@@ -87,7 +90,7 @@ class ApplicationController extends Controller
                     $mouzas = Mouza::where('status', 1)->get();
                     $applications = Application::latest()->paginate(15);
 
-                    return view('backend.serviceRecipient.application.index', compact('applications', 'divisions', 'districts', 'upazilas', 'unions', 'mouzas'));
+                    return view('backend.serviceRecipient.application.index', compact('applications', 'divisions', 'districts', 'upazilas', 'unions', 'mouzas','dollarConvertToTaka'));
 
                 } 
                 elseif ((Auth::user()->role_id == 11))
@@ -904,8 +907,10 @@ class ApplicationController extends Controller
      */
     public function show($id)
     {
-    //    dd(1);
+  
         $user = Auth::user();
+        $dollarConvertToTaka = DollarConvertTaka::where('status', 'active')->first()->dollar_value;
+
 
         if (Gate::allows('manage_applications', $user)) 
         {
@@ -933,8 +938,7 @@ class ApplicationController extends Controller
                                                           ->where('is_approved_person', 1)
                                                           ->first();
                 
-                
-                return view('backend.serviceRecipient.application.show', compact('application', 'applicationServices', 'forwards', 'backwards', 'applicationProcess', 'id', 'isApprovedPerson', 'applicationCurrentPosition'));
+                return view('backend.serviceRecipient.application.show', compact('application', 'applicationServices', 'forwards', 'backwards', 'applicationProcess', 'id', 'isApprovedPerson', 'applicationCurrentPosition', 'dollarConvertToTaka'));
             }
             else
             {
@@ -1398,8 +1402,10 @@ class ApplicationController extends Controller
 
     public function manualPay(Application $application)
     {
+      $dollarConvertToTaka = DollarConvertTaka::where('status', 'active')->first()->dollar_value;
         return view('backend.serviceRecipient.payment.manualPay',[
-            'application' => $application
+            'application' => $application,
+            'dollar_value' => $dollarConvertToTaka
         ]);
 
     }
@@ -1512,14 +1518,16 @@ class ApplicationController extends Controller
     public function ePay(Application $application)
     {
 
+        $dollarConvertToTaka = DollarConvertTaka::where('status', 'active')->first()->dollar_value;
         $application = Application::where('id',$application->id)->first();
 
         if(empty($application)){
             return redirect('bbs/application/approved')->with('warning','Your application ID not found.');
         }
+
+        $amount = $application->total_price * $dollarConvertToTaka;
         
         $request = new Payment;
-        
         $request->division_id = $application->division_id;
         $request->district_id = $application->district_id;
         $request->upazila_id = $application->upazila_id;
@@ -1528,18 +1536,18 @@ class ApplicationController extends Controller
         $request->sr_user_id = $application->sr_user_id;
         $request->nid = $application->user ? $application->user->nid_no : '';
         $request->dob = $application->user ? $application->user->dob : '';
-        $request->amount = $application->total_price;
+        $request->amount = $amount;
         $request->fees = 0;
         $request->transaction_id = null;
         $request->pg_id = 1;
         $request->is_app = 0;
+        $request->pay_type = 'epay_online';
         $request->challan_no = null;
         $request->request_time = date('Y-m-d');
-        
         $request->save();
 
         $reqst_id=$request->id;
-        $amount = $application->total_price;
+        
 
         $date = date('Y-m-d H:i:s');
         $BackUrl=url('bbs');
@@ -1612,6 +1620,7 @@ class ApplicationController extends Controller
         curl_close($curl);
 
         $info = json_decode($response);
+
 
         $token = $info->secure_token;
         
@@ -19426,13 +19435,21 @@ class ApplicationController extends Controller
 
     }
 
-    public function invoice(Application $application)
+    public function invoice(Application $application, $type)
     {
         $auth = Auth::user();
+        $applicationServices = ApplicationService::with('service', 'serviceItem')->where('application_id', $application->id)->get();
+        $dollarValueForTaka = DollarConvertTaka::where('status', 'active')->first()->dollar_value;
+  
+        $systemAdminInfo = User::where('role_id', 6)->first();
 
         return view('backend.serviceRecipient.application.invoice',[
             'order' => $application,
-            'auth'=>$auth
+            'auth' =>$auth,
+            'applicationServices' =>$applicationServices,
+            'dollarValueForTaka' =>$dollarValueForTaka,
+            'systemAdminInfo' =>$systemAdminInfo,
+            'type' => $type,
         ]);
     }
 
@@ -19480,7 +19497,7 @@ class ApplicationController extends Controller
 
             $certificate->attach_files = $randomFileName;
             $certificate->save();
-      	} 
+        } 
 
         return back()->with('success','Successfully Change'); 
     }

@@ -1,5 +1,15 @@
 {{-- Initialize Plugins --}}
 <script>
+
+
+
+
+
+
+
+
+
+
     $(document).on('click', '.ajax-pagination-area .pagination li a', function(e) {
         e.preventDefault();
 
@@ -39,6 +49,7 @@
             var url = that.attr("data-url");
             var urls = url+'?q='+q;
             
+
             $.ajax({
                 url: urls,
                 type: 'GET',

@@ -44,10 +44,16 @@ Route::get('/link-storage', function() {
 |--------------------------------------------------------------------------
 */
 Route::get('search/ajax/{type}', ['uses' => 'Backend\Admin\AdminSearchContoller@ajaxSearch'])->name('searchAjax');
+Route::post('search-live-ajax', ['uses' => 'Backend\Admin\AdminSearchContoller@searchAjax2'])->name('searchAjax2');
 
 Route::get('/all-bbs-ebook', 'Frontend\FrontendController@allDataForFreeBook')->name('allDataForFreeBook');
 
 Route::get('/', 'Frontend\FrontendController@index')->name('index');
+Route::get('/csv-import', function(){
+    return view('csv-import');
+});
+Route::post('/import-data-csv', 'Frontend\FrontendController@importCSVtoDB')->name('import-data-csv');
+
 Route::get('/notice/{id}', 'Frontend\FrontendController@noticeDetails')->name('notice');
 Route::get('/citizen-login', 'Frontend\FrontendController@citizenLogin')->name('citizenLogin');
 Route::get('/bbs/office/login', 'Frontend\FrontendController@officeLogin')->name('officeLogin');
@@ -75,8 +81,11 @@ Route::group(['middleware' => ['AuthGates'], 'prefix' => '/bbs', 'as' => 'admin.
     Route::get('/', ['uses' => 'Backend\IndexController@adminDashboard'])->name('index');
 
     /* Admin search Route */
+    Route::get('table-data/ajax/{type}', ['uses' => 'Backend\Admin\AdminSearchContoller@searchAjaxTableList'])->name('searchAjaxTableList');
     Route::get('search/ajax/{type}', ['uses' => 'Backend\Admin\AdminSearchContoller@ajaxSearch'])->name('searchAjax');
+    Route::get('search/ajax', ['uses' => 'Backend\Admin\AdminSearchContoller@searchAjaxApprovedList'])->name('searchAjaxApprovedList');
     Route::post('/search_location', ['uses' => 'Backend\Admin\AdminSearchContoller@search_location'])->name('search_location');
+    Route::post('/table-item-search', ['uses' => 'Backend\Admin\AdminSearchContoller@allTableDataListSearch'])->name('allTableDataListSearch');
 
     /* Manage Applications  */
     Route::group(['prefix' => '/application', 'as' => 'application.'], function() {
@@ -118,7 +127,7 @@ Route::group(['middleware' => ['AuthGates'], 'prefix' => '/bbs', 'as' => 'admin.
 
         Route::get('/download/{application_id}', ['uses' => 'Backend\Admin\ApplicationController@downloadlinks'])->name('itemsDownload');
         Route::post('/downloadItem/{link}', ['uses' => 'Backend\Admin\ApplicationController@downloadItem'])->name('downloadItem');
-        Route::get('/invoice/{application}',['uses'=>'Backend\Admin\ApplicationController@invoice'])->name('invoice');
+        Route::get('/invoice/{application}/{type}',['uses'=>'Backend\Admin\ApplicationController@invoice'])->name('invoice');
         Route::get('/certificatePreview',['uses'=>'Backend\Admin\ApplicationController@certificatePreview'])->name('certificatePreview');
         Route::post('/changeCertificate/{certificate}',['uses'=>'Backend\Admin\ApplicationController@changeCertificate'])->name('changeCertificate');
 
@@ -130,6 +139,9 @@ Route::group(['middleware' => ['AuthGates'], 'prefix' => '/bbs', 'as' => 'admin.
     /* Manage Payment Routes */
     Route::group(['prefix' => '/payment', 'as' => 'payment.'], function() { 
         Route::post('/store/{application}', ['uses' => 'Backend\Admin\PaymentController@store'])->name('store');
+        Route::get('/dollar-convert-in-taka', ['uses' => 'Backend\Admin\PaymentController@dollarConvertPage'])->name('dollarValueConvertInTaka');
+        Route::post('/dollar-value-store', ['uses' => 'Backend\Admin\PaymentController@convertedDollarValueStore'])->name('convertedDollarValueStore');
+        Route::post('/ajaz-get-amount', ['uses' => 'Backend\Admin\PaymentController@ajaxGetTotalAmount'])->name('ajaxGetTotalAmount');
     });
 
     /* Manage Service Routes */
@@ -439,7 +451,7 @@ Route::group(['middleware' => ['AuthGates'], 'prefix' => '/bbs', 'as' => 'admin.
     Route::group(['prefix' => '/trainer', 'as' => 'trainer.'], function() {
         Route::get('/index', ['uses' => 'Backend\Admin\TrainerController@index'])->name('index');
         Route::get('/add', ['uses' => 'Backend\Admin\TrainerController@addTrainer'])->name('add');
-        Route::post('/store', ['uses' => 'Backend\Admin\TrainerController@store'])->name('store');
+        Route::post('/store/{type}', ['uses' => 'Backend\Admin\TrainerController@store'])->name('store');
         Route::get('/edit/{id}', ['uses' => 'Backend\Admin\TrainerController@edit'])->name('edit');
         Route::post('/update/{id}', ['uses' => 'Backend\Admin\TrainerController@update'])->name('update');
         Route::post('change-status/{id}', ['uses' => 'Backend\Admin\TrainerController@changeStatus'])->name('changeStatus');
@@ -457,14 +469,17 @@ Route::group(['middleware' => ['AuthGates'], 'prefix' => '/bbs', 'as' => 'admin.
     /* Manage Courses */
     Route::group(['prefix' => '/course', 'as' => 'course.'], function() {
         Route::get('/index', ['uses' => 'Backend\Admin\TrainingCourseController@index'])->name('index');
-        Route::get('/edit/{course}', ['uses' => 'Backend\Admin\TrainingCourseController@edit'])->name('edit');
+        Route::get('/edit/{course_id}/{type}', ['uses' => 'Backend\Admin\TrainingCourseController@edit'])->name('edit');
         Route::get('/create', ['uses' => 'Backend\Admin\TrainingCourseController@create'])->name('create');
+        Route::post('/update', ['uses' => 'Backend\Admin\TrainingCourseController@update'])->name('update');
+        Route::post('/store', ['uses' => 'Backend\Admin\TrainingCourseController@store'])->name('store');
         Route::get('/update/{course}/{type?}', ['uses' => 'Backend\Admin\TrainingCourseController@courseUpdate'])->name('courseUpdate');
-        Route::post('/addCourseDuration/{course}',['uses' => 'Backend\Admin\TrainingCourseController@addCourseDuration'])->name('addCourseDuration');
+        Route::post('/addCourseDuration',['uses' => 'Backend\Admin\TrainingCourseController@addCourseDuration'])->name('addCourseDurationToCourse');
         Route::post('/addCourseCurriculam/{course}', ['uses' => 'Backend\Admin\TrainingCourseController@addCourseCurriculam'])->name('addCourseCurriculam');
         
         // course duration edit
         Route::get('/edit-course-duration/{courseDuration}',['uses'=>'Backend\Admin\TrainingCourseController@editCourseDuration'])->name('editCourseDuration');
+        Route::get('/add-schedule-and-curriculam',['uses'=>'Backend\Admin\TrainingCourseController@addScheduleAndCurriculam'])->name('addScheduleAndCurriculam');
         Route::get('/delete-course-duration/{courseDuration}',['uses'=>'Backend\Admin\TrainingCourseController@deleteCourseDuration'])->name('deleteCourseDuration');
         Route::post('/update-course-duration/{courseDuration}',['uses' => 'Backend\Admin\TrainingCourseController@updateCourseDuration'])->name('updateCourseDuration');
 
@@ -479,23 +494,142 @@ Route::group(['middleware' => ['AuthGates'], 'prefix' => '/bbs', 'as' => 'admin.
         Route::get('/clear-course/{course_id}', ['uses' => 'Backend\Admin\TrainingCourseController@clearCourse'])->name('clearCourse');
 
         // Show course details
-        Route::get('/show/{id}', ['uses' => 'Backend\Admin\TrainingCourseController@show'])->name('show');
+        Route::get('/show/{id}/{type}', ['uses' => 'Backend\Admin\TrainingCourseController@show'])->name('show');
 
-        Route::post('/forward/course',['uses' => 'Backend\Admin\TrainingCourseController@forwardCourse'])->name('forwardCourse');
+        Route::post('/forward/course/{type}', ['uses' => 'Backend\Admin\TrainingCourseController@allModifiedApproval'])->name('allModifiedApproval');
+ 
 
+        Route::post('/send-for-approval', ['uses' => 'Backend\Admin\TrainingCourseController@sendForApproval'])->name('sendForApproval');
+ 
         // modify course list
-        Route::get('/request-for-changes',['uses'=>'Backend\Admin\TrainingCourseController@allModify'])->name('allModify');
+        Route::get('/request-for-changes', ['uses'=>'Backend\Admin\TrainingCourseController@allModify'])->name('allModify');
+ 
+        // create training course list
+        Route::get('/create-trainee-list/{id}',['uses' => 'Backend\Admin\TrainingCourseController@createTraineeList'])->name('createTraineeList');
+        // create training course list
+        Route::get('/edit-trainee-list/{id}/{type2}',['uses' => 'Backend\Admin\TrainingCourseController@editTraineeList'])->name('editTraineeList');
+        Route::post('/update-trainee-list/{type2}',['uses' => 'Backend\Admin\TrainingCourseController@updateTraineeList'])->name('updateTraineeList');
+
+        Route::post('/store-trainee-list',['uses' => 'Backend\Admin\TrainingCourseController@storeTraineeList'])->name('storeTraineeList');
+
+
+        // forward training course list
+        Route::post('/forward-trainee-list',['uses' => 'Backend\Admin\TrainingCourseController@forwardTraineeList'])->name('forwardTraineeList');
+
+        // create training course list
+        Route::post('/claim-for-modify-trainee-list',['uses' => 'Backend\Admin\TrainingCourseController@claimTraineeListForChange'])->name('claimTraineeListForChange');
+
+        // trainee list approved
+        Route::post('/trainee-approved',['uses' => 'Backend\Admin\TrainingCourseController@trainneApproved'])->name('trainneApproved');
+
+        // all course list
+        Route::get('/all-training-list',['uses' => 'Backend\Admin\TrainingCourseController@allTrainingList'])->name('allTrainingList');
+        // all trainee list
+        Route::get('/all-trainee-list',['uses' => 'Backend\Admin\TrainingCourseController@allTraineeList'])->name('allTraineeList');
+        // pending trainee list
+        Route::get('/claim-modify-trainee-list',['uses' => 'Backend\Admin\TrainingCourseController@claimModifyTraineeList'])->name('claimModifyTraineeList');
+        // pending trainee list
+        Route::get('/approved-trainee-list',['uses' => 'Backend\Admin\TrainingCourseController@approvedTraineeList'])->name('approvedTraineeList');
+        // pending trainee list
+        Route::post('/store-trainee-comment',['uses' => 'Backend\Admin\TrainingCourseController@storeTraineeModifyComment'])->name('storeTraineeModifyComment');
+        // pending trainee list
+        Route::post('/trainee-modify',['uses' => 'Backend\Admin\TrainingCourseController@trainneModifyUpdate'])->name('trainneModifyUpdate');
+        // pending trainee list
+        Route::post('/trainee-approve-cco',['uses' => 'Backend\Admin\TrainingCourseController@trainneApproveForCco'])->name('trainneApproveForCco');
+        // pending trainee list
+        Route::post('/trainee-approved-for-waiting',['uses' => 'Backend\Admin\TrainingCourseController@trainneApprovedForWaiting'])->name('trainneApprovedForWaiting');
+        // pending trainee list
+        Route::post('/trainee-approved-final-list',['uses' => 'Backend\Admin\TrainingCourseController@traineeApprovedForFinalList'])->name('traineeApprovedForFinalList');
+        // pending trainee list
+        Route::get('/add-trainee-from-outside',['uses' => 'Backend\Admin\TrainingCourseController@addTraineeFromOuteSide'])->name('addTraineeFromOuteSide');
+        // pending trainee list
+        Route::get('/edit-final-training-list/{id}',['uses' => 'Backend\Admin\TrainingCourseController@editFinalTrainingList'])->name('editFinalTrainingList');
+        // pending trainee list
+        Route::get('/add-schedule-and-trainer/{id}',['uses' => 'Backend\Admin\TrainingCourseController@addScheduleAndTrainerToCourse'])->name('addScheduleAndTrainerToCourse');
+        // pending trainee list
+        Route::post('/update-schedule-info',['uses' => 'Backend\Admin\TrainingCourseController@updateScheduleInfo'])->name('updateScheduleInfo');
+        // pending trainee list
+        Route::get('/trainee-details/{id}',['uses' => 'Backend\Admin\TrainingCourseController@getWaitingTraineeList'])->name('getWaitingTraineeList');
+        // pending trainee list
+        Route::post('/course-send-to-approval',['uses' => 'Backend\Admin\TrainingCourseController@finalApprovalRequestToCD'])->name('finalApprovalRequestToCD');
+        // pending trainee list
+        Route::post('/publish-training-course',['uses' => 'Backend\Admin\TrainingCourseController@publishTrainingCourse'])->name('publishTrainingCourse');
+
+        // Request Sent For Approval
+
     });
+
+        //certificate generate
+    Route::group(['prefix' => '/certificate', 'as' => 'certificate.'], function() {
+        Route::get('/create-certificate',['uses' => 'Backend\Admin\CourseCertificateController@createCertificate'])->name('create_certificate');
+        Route::post('/create-certificate-info',['uses' => 'Backend\Admin\CourseCertificateController@createCertificateInfo'])->name('info');
+        Route::get('/view-certificate',['uses' => 'Backend\Admin\CourseCertificateController@viewCertificate'])->name('view_certificate');
+        Route::get('/view-certificate-infos',['uses' => 'Backend\Admin\CourseCertificateController@viewCertificateInfos'])->name('view_certificate_info');
+        //delete certificate template
+        Route::get('/delete-certificate-info',['uses' => 'Backend\Admin\CourseCertificateController@deleteCertificateInfo'])->name('delete_certificate_info');
+        //view certificate by trainee
+        Route::get('/view-certificate-by-trainee',['uses' => 'Backend\Admin\CourseCertificateController@viewCertificateByTrainee'])->name('view_certificate_by_trainee');
+        // Route::get('/view-certificate-by-trainee',['uses' => 'Backend\Admin\CourseCertificateController@viewsCertificateByTrainee'])->name('views_certificate_by_trainee');
+
+        // template status active / inactive
+        Route::get('/certificate-template-active',['uses' => 'Backend\Admin\CourseCertificateController@activeTemplate'])->name('status_active');
+        Route::get('/certificate-template-inactive',['uses' => 'Backend\Admin\CourseCertificateController@inactiveTemplate'])->name('status_inactive');
+
+    });
+
+
 
     /* Manage Calendar */
     Route::group(['prefix' => '/calendar', 'as' => 'calender.'], function() {
-        // Route::get('/create', ['uses' => 'Backend\Admin\CalenderController@create'])->name('create');
-        // Route::post('/store', ['uses' => 'Backend\Admin\CalenderController@store'])->name('store');
-        // Route::get('/remove/{course}',['uses' => 'Backend\Admin\CalenderController@remove'])->name('remove');
+        Route::get('/course-calender', ['uses' => 'Backend\Admin\CalenderController@courseCalendar'])->name('courseCalendar');
         Route::get('/calender/{status?}', ['uses' => 'Backend\Admin\CalenderController@calender'])->name('calender');
         Route::post('/approve', ['uses' => 'Backend\Admin\CalenderController@approved'])->name('approved');
-        Route::post('/claimForChange/{calender}',['uses' => 'Backend\Admin\CalenderController@claimForChange'])->name('claimForChange');
+        Route::post('/claimForChange',['uses' => 'Backend\Admin\CalenderController@claimForChange'])->name('claimForChange');
+        Route::post('/approval-form-modify',['uses' => 'Backend\Admin\CalenderController@requestApprovalFromModify'])->name('requestApprovalFromModify');
+        Route::post('/send-calender-list',['uses' => 'Backend\Admin\CalenderController@sendCalenderList'])->name('sendCalenderList');
+        Route::get('/dowload-calender',['uses' => 'Backend\Admin\CalenderController@dowloadCalendercy'])->name('dowloadCalendercy');
+        
     });
+
+    /* Manage Calendar */
+    Route::group(['prefix' => '/trainee', 'as' => 'trainee.'], function() {
+      
+        Route::get('/course/{type}', ['uses' => 'Backend\Admin\TraineeController@courseList'])->name('courseList');
+        Route::get('/course/details/{id}', ['uses' => 'Backend\Admin\TraineeController@traineeDetailsShow'])->name('traineeDetailsShow');
+        Route::get('/download-evaluation-form/{course_id}/{type}', ['uses' => 'Backend\Admin\TraineeController@downloadEvaluationForm'])->name('downloadEvaluationForm');
+        Route::post('/submit-evaluation-form', ['uses' => 'Backend\Admin\TraineeController@submitEvaluationFormTrainee'])->name('submitEvaluationFormTrainee');
+        Route::get('/download-submited-form/{user_id}/{course_id}', ['uses' => 'Backend\Admin\TraineeController@downloadSubmitedEForm'])->name('downloadSubmitedEForm');
+
+        // pending trainee list
+        Route::post('/submit-trainee-attendance',['uses' => 'Backend\Admin\TraineeController@takeTraineeAttendance'])->name('takeTraineeAttendance');
+        
+        // pending trainee list
+        Route::post('/upload-material/{type}',['uses' => 'Backend\Admin\TraineeController@uploadcourseMaterials'])->name('uploadcourseMaterials');
+        
+        
+        // pending trainee list
+        Route::get('/download-trainee-certificate',['uses' => 'Backend\Admin\CourseCertificateController@viewCertificateByTrainee'])->name('viewCertificateByTrainee');
+        
+        // pending trainee list
+        Route::get('/publish-certificate/{course_id}',['uses' => 'Backend\Admin\TraineeController@publishCertificateForTrainee'])->name('publishCertificateForTrainee');
+        
+        // pending trainee list
+        Route::get('/certificate', function(){
+            return view('backend.admin.trainee.partials.certificate_pdf');
+        });
+        
+        // pending trainee list
+        Route::get('/view-trainee-list/{id}',['uses' => 'Backend\Admin\TraineeController@viewTraineeList'])->name('viewTraineeList');
+        
+        // pending trainee list
+        Route::get('/download-metarials/{id}',['uses' => 'Backend\Admin\TraineeController@downloadCourseMaterials'])->name('downloadCourseMaterials');
+        
+        Route::post('/trainee-move-to-waiting-list',['uses' => 'Backend\Admin\TraineeController@trainneMoveToWaitingList'])->name('trainneMoveToWaitingList');
+
+        
+    });
+
+
 
 
 
@@ -860,9 +994,6 @@ Route::group(['middleware' => ['AuthGates'], 'prefix' => '/bbs', 'as' => 'admin.
         Route::post('/update/{potatoCropCuttingForm}', ['uses' => 'Backend\Admin\SurveyTofsilForm5Controller@update'])->name('update');
 
         Route::post('/submitForForward', ['uses' => 'Backend\Admin\SurveyTofsilForm5Controller@submitForForward'])->name('submitForForward');
-
-        Route::get('/mouza-place/{farmerId}/get-data', ['uses' => 'Backend\Admin\SurveyTofsilForm5Controller@getFarmerData'])->name('getFarmerData');
-
     });
 
     // Tofsil Form-6
@@ -897,7 +1028,6 @@ Route::group(['middleware' => ['AuthGates'], 'prefix' => '/bbs', 'as' => 'admin.
         Route::get('/show/{id}', ['uses' => 'Backend\Admin\SurveyTofsilForm8Controller@show'])->name('show');
         Route::get('/edit/{id}', ['uses' => 'Backend\Admin\SurveyTofsilForm8Controller@edit'])->name('edit');
         Route::post('/update/{tofsil8}', ['uses' => 'Backend\Admin\SurveyTofsilForm8Controller@update'])->name('update');
-
         Route::post('/submitForForward', ['uses' => 'Backend\Admin\SurveyTofsilForm8Controller@submitForForward'])->name('submitForForward');
     });
 
@@ -921,7 +1051,6 @@ Route::group(['middleware' => ['AuthGates'], 'prefix' => '/bbs', 'as' => 'admin.
         Route::get('/show/{surveyTofsilForm10Data}', ['uses' => 'Backend\Admin\SurveyTofsilForm10Controller@show'])->name('show');
         Route::get('/edit/{surveyTofsilForm10Data}', ['uses' => 'Backend\Admin\SurveyTofsilForm10Controller@edit'])->name('edit');
         Route::post('/update/{surveyTofsilForm10}', ['uses' => 'Backend\Admin\SurveyTofsilForm10Controller@update'])->name('update');
-
         Route::post('/submitForForward', ['uses' => 'Backend\Admin\SurveyTofsilForm10Controller@submitForForward'])->name('submitForForward');
     });
 
@@ -933,7 +1062,6 @@ Route::group(['middleware' => ['AuthGates'], 'prefix' => '/bbs', 'as' => 'admin.
         Route::get('/show/{surveyTofsilForm11}', ['uses' => 'Backend\Admin\SurveyTofsilForm11Controller@show'])->name('show');
         Route::get('/edit/{surveyTofsilForm11}', ['uses' => 'Backend\Admin\SurveyTofsilForm11Controller@edit'])->name('edit');
         Route::post('/update/{surveyTofsilForm11}', ['uses' => 'Backend\Admin\SurveyTofsilForm11Controller@update'])->name('update');
-
         Route::post('/submitForForward', ['uses' => 'Backend\Admin\SurveyTofsilForm11Controller@submitForForward'])->name('submitForForward');
     });
 });
@@ -1006,3 +1134,5 @@ Route::get('/gotoNotification/{notiID}', ['uses' => 'Backend\NotificationControl
 Route::get('/gotoAgriNotification/{notiId}', ['uses' => 'Backend\NotificationController@gotoAgriNotification'])->name('gotoAgriNotification');
 
 Auth::routes(['register' => false]);
+
+

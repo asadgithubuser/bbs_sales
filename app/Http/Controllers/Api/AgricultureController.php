@@ -31,11 +31,11 @@ class AgricultureController extends BaseController
         $user = Auth::user();
 
         $surveyProcessList = SurveyProcessList::where('division_id', $user->division_id)
-                                                ->where('district_id', $user->district_id)
-                                                ->where('upazila_id', $user->upazila_id)
-                                                ->where('survey_by', $user->id)
-                                                ->where('status', 1)
-                                                ->orderBy('survey_form_id','ASC')->get();
+                                ->where('district_id', $user->district_id)
+                                ->where('upazila_id', $user->upazila_id)
+                                ->where('survey_by', $user->id)
+                                ->where('status', 1)
+                                ->orderBy('survey_form_id','ASC')->get();
         $i=0;
         foreach($surveyProcessList as $data){
             $surveyProcessList[$i]->division_name=$data->division->name_bn;

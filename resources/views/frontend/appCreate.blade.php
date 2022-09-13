@@ -36,13 +36,15 @@
 
                                                 <div class="col-lg-8 col-md-8 col-sm-12">
                                                     <select class="form-control select2" name="country_id" id="country_id" readonly>
-														@if ($me = Auth::user())
-															<option value="{{ Auth::user()->country_id }}" selected>{{ $me->country->country_name }}</option>
-														@else
-															<option value="">--Select Country--</option> 
-															@foreach ($countrys as $country)
-																<option value="{{ $country->id }}">{{ $country->country_name }}</option>
-															@endforeach
+														@if (isset(Auth::user()->country_id))
+															@if ($me = Auth::user())
+																<option value="{{ Auth::user()->country_id }}" selected>{{ $me->country->country_name }}</option>
+															@else
+																<option value="">--Select Country--</option> 
+																@foreach ($countrys as $country)
+																	<option value="{{ $country->id }}">{{ $country->country_name }}</option>
+																@endforeach
+															@endif
 														@endif
                                                     </select>
 

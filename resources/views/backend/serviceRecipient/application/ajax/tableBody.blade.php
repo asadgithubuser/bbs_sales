@@ -5,9 +5,6 @@
             <th>আবেদনের আইডি</th>
             <th class="text-left">আবেদনকারীর নাম</th>
             <th class="text-left">ব্যবহারের ধরন</th>
-            {{-- <th>অফিসের অনুরোধ</th> --}}
-            {{-- <th class="text-left">উদ্দেশ্য</th> --}}
-            {{-- <th>গ্রহণের ধরন</th> --}}
             <th class="text-left">প্রেরক</th>
             <th class="text-left">গ্রাহক</th>
             <th class="text-left">আবেদনের তারিখ</th>
@@ -145,15 +142,15 @@
                                                 @if ($application->payments->is_app == true)
                                                     <a href="{{ route('admin.application.itemsDownload', $application->id) }}"
                                                         class="btn btn-sm mt-1 w3-gray  dropdown-item">সেবা পাওয়া</a>
-                                                    <a href="{{ route('admin.application.invoice', $application) }}"
+                                                    <a href="{{ route('admin.application.invoice', ['application' => $application, 'type' => 'chalan']) }}"
                                                         class="btn  btn-info btn-sm mt-1 dropdown-item  " title="paid">
                                                         চালান
                                                     </a>
                                                     
                                                 @elseif($application->payments->is_app == false)
                                                     <button data-toggle="modal"
-                                                        data-target="#payment{{ $application->id }}"
-                                                        class="btn btn-sm mt-1 btn-info dropdown-item  " title="pay">
+                                                        data-target="#payment{{ $application->id }}" value="{{ $application->id }}" 
+                                                        class="payBtn_appIndex btn btn-sm mt-1 btn-info dropdown-item  " title="pay">
                                                         প্রদান করুন 
                                                     </button>
                                                 @endif
@@ -179,10 +176,12 @@
                                                 @endif
                                             @endif
                                         @else
-                                            <button data-toggle="modal" data-target="#payment{{ $application->id }}"
-                                                class="btn btn-sm mt-1 btn-info dropdown-item  " title="pay">
-                                                প্রদান করুন 
-                                            </button>
+                                        <button data-toggle="modal"
+                                            data-target="#payment{{ $application->id }}" value="{{ $application->id }}" 
+                                            class="payBtn_appIndex btn btn-sm mt-1 btn-info dropdown-item  " title="pay">
+                                            প্রদান করুন 
+                                        </button>
+
                                         @endif
 
                                     @endif
@@ -207,8 +206,15 @@
                                     <i aria-hidden="true" class="ki ki-close"></i>
                                 </button>
                             </div>
+                            
                             <div class="modal-body">
                                 <div class="container">
+                                    <div class="row mb-5">
+                                        <h4 style="background-color: #4595a3; padding: 10px 20px;">TOTAL AMOUNT <span class="ePamentTotalAmount ml-10 mr-2"></span>BDT</h4>
+                                    </div>
+                                    <div class="row mb-10">
+                                        <a href="{{ route('admin.application.invoice', ['application' => $application, 'type' => 'draft']) }}" class="btn btn-primary">Draft Invoice</a>
+                                    </div>
                                     <div class="row">
                                         <a href="{{ route('admin.application.ePay', $application) }}"
                                             class="col-md-5 w3-button w3-white w3-border w3-border-blue w3-hover-blue"

@@ -10,14 +10,78 @@ use App\Models\ServiceItem;
 use App\Models\Notice;
 use App\Models\Service;
 use App\Models\Payment;
+use App\Imports\CommodityImport;
 use App\Models\ServiceInventory;
 use Session;
+use Excel;
 
 class FrontendController extends Controller
 {
     // Method for index page
     public function index()
     {
+
+        // set_time_limit(360);
+
+
+// ============== sql data trasfer from ServiceItem to ServiceInventory table ================
+
+
+        // $count = 0;
+        // $serviceItems = ServiceItem::get();
+        // foreach($serviceItems as $serviceItem){
+
+
+        //     if($serviceItem->service_item_type == 1){
+        //         $service_item_type = 'Survey Data';
+        //     }else if($serviceItem->service_item_type == 2){
+        //         $service_item_type = 'Census Data';
+        //     }
+
+
+        //     //generate downloadable_link;
+        //     // $downloadable_link = 
+
+        //     $cerviceInventory = new ServiceInventory;
+        //     $cerviceInventory->sales_center_id                 = $serviceItem->department_id;
+        //     $cerviceInventory->service_id                      = $serviceItem->service_id;
+        //     $cerviceInventory->service_item_id                 = $serviceItem->id;
+        //     $cerviceInventory->title                           = $serviceItem->item_name_en;
+        //     $cerviceInventory->sub_title                       = $serviceItem->description;
+        //     $cerviceInventory->data_source                     = $service_item_type;
+        //     $cerviceInventory->service_type                    = $service_item_type;
+        //     $cerviceInventory->attach_file                     = $serviceItem->attachment;
+        //     $cerviceInventory->survey_date                     = null;
+        //     $cerviceInventory->publish_date                    = $serviceItem->year;
+        //     $cerviceInventory->downloadable_link               = $serviceItem->item_name_en;
+        //     $cerviceInventory->number_of_hard_copies           = 0;
+        //     $cerviceInventory->number_of_complimentary_copies  = 0;
+        //     $cerviceInventory->number_of_sale_copies           = 0;
+        //     $cerviceInventory->store_room                      = 0;
+        //     $cerviceInventory->cover_file                      = $serviceItem->item_name_en;
+        //     $cerviceInventory->shelf_no                        = 0;
+        //     $cerviceInventory->rack_no                         = 0;
+        //     $cerviceInventory->price                           = $serviceItem->price_bdt_org;
+        //     $cerviceInventory->price_dollor                    = $serviceItem->price_usd_org;
+        //     $cerviceInventory->status                          = 1;
+        //     $cerviceInventory->can_download                    = 1;
+        //     $cerviceInventory->created_by                      = $serviceItem->created_by;
+        //     $cerviceInventory->updated_by                      = $serviceItem->updated_by;
+        //     $cerviceInventory->save();
+
+        //     $count ++;
+        // }
+
+        // return $count." items inserted successfully."; 
+
+
+        // exit();
+
+ 
+
+// Population and Housing Census 2011
+
+  
         $notices = Notice::orderBy('id', 'desc')
                            ->where('status', 1)
                            ->limit(5)
@@ -26,6 +90,56 @@ class FrontendController extends Controller
         $services = Service::where('status',true)->get();
 
         return view('frontend.index', compact('notices', 'services'));
+    }
+
+    public function importCSVtoDB(Request $request)
+    {
+         
+$count = 0;
+
+        $file = $request->file('csv_file');
+
+        if($file != null){
+            $excel_rows = Excel::toArray(new CommodityImport, $file);
+
+            foreach($excel_rows[0] as $index => $row){
+
+                $items = new ServiceInventory;
+                $items->sales_center_id = $row[0];
+                $items->service_id = 2;
+                $items->service_item_id = null;
+                $items->title = $row[4];
+                $items->sub_title = $row[5];
+                $items->data_source = null;
+                $items->service_type = 'Publication Data';
+                $items->attach_file = null;
+                $items->survey_date = $row[7];
+                $items->publish_date = $row[8];
+                $items->downloadable_link = 0;
+                $items->number_of_hard_copies = 0;
+                $items->number_of_complimentary_copies = 0;
+                $items->number_of_sale_copies = 0;
+                $items->store_room = 0;
+                $items->shelf_no = 0;
+                $items->rack_no = 0;
+                $items->price = $row[16];
+                $items->price_dollor = $row[17];
+                $items->status = 1;
+                $items->can_download = 0;
+                $items->created_by = 1;
+                $items->updated_by = null;
+                $items->save();
+
+$count ++;
+
+            }
+        }
+
+
+        return $count." items inserted successfully."; 
+        
+
+
     }
 
     public function allDataForFreeBook(Request $request)
@@ -69,6 +183,7 @@ class FrontendController extends Controller
     public function freePublicationData()
     {
         $datas = ServiceInventory::where('can_download',1)->get();
+
         $flag = 0;
         return view('frontend.freePublicationData',[
             'serviceInventories' => $datas,

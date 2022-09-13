@@ -29,16 +29,12 @@
                                      <div class="form-group row">
                                        <div class="col-md-11">
                                         <select class="form-control step2-select"
-                                                    name="e_book" id="e_book" 
-                                                    
-                                                    data-placeholder="Search free ebook"
-                                                    data-select2-id="e_book"
-                                                    tabindex="-1" 
-                                                    aria-hidden="true"
-                                                    data-ajax-url="{{route('searchAjax',['type'=>'book'])}}"
-                                                    data-ajax-cache="true"
-                                                    data-ajax-dataType="json"
-                                                    data-ajax-delay="200">
+                                                    name="e_book" id="e_book">
+
+                                                    @foreach($serviceInventories as $item)
+
+                                                        <option value="{{ $item->id }}">{{ $item->title }}</option>
+                                                    @endforeach
                                                                                                        
                                         </select>
                                         
@@ -105,7 +101,7 @@
        </div>
 @endsection
 @push('frontScript')
-    {{-- <script>
+<!--     {{-- <script>
         $(document).on("keyup change", ".ajax-data-search", function(e){
             
             e.preventDefault();
@@ -127,38 +123,95 @@
                 error: function(){}
             });
         });
-    </script> --}}
+    </script> --}} -->
+
+
+
+
     <script>
         $('.step2-select').select2({
     
-            ajax: {
-                data: function (params) {
-                    return {
-                        q: params.term, // search term
-                        page: params.page
-                    };
-                },
-                processResults: function (data, params) {
-                    params.page = params.page || 1;
-                    // alert(data[0].s);
-                    var data = $.map(data, function (obj) {
-                        obj.id = obj.id || obj.id;
-                        return obj;
-                    });
-                    var data = $.map(data, function (obj) {
+            // ajax: {
+            //     data: function (params) {
+            //         return {
+            //             q: params.term, // search term
+            //             page: params.page
+            //         };
+            //     },
+            //     processResults: function (data, params) {
+            //         params.page = params.page || 1;
+                     
+            //         var data = $.map(data, function (obj) {
+            //             obj.id = obj.id || obj.id;
+            //             return obj;
+            //         });
+            //         var data = $.map(data, function (obj) {
                         
-                        obj.text = obj.title || obj.sub_title;
-                        return obj;
-                    });
-                    return {
-                        results: data,
-                        pagination: {
-                        more: (params.page * 30) < data.total_count
-                        }
-                    };
-                }
-            },
+            //             obj.text = obj.title || obj.sub_title;
+            //             return obj;
+            //         });
+            //         return {
+            //             results: data,
+            //             pagination: {
+            //             more: (params.page * 30) < data.total_count
+            //             }
+            //         };
+            //     }
+            // },
         });
         
     </script>
+
+
+
+<script>
+    
+
+    // $(document).ready(function (e) {   
+    //     $("#e_book").select2({
+    //         dropdownCssClass: "productCodesClass"
+    //     });
+
+
+    //     $(document).on('keyup', '.productCodesClass > span.select2-search> input.select2-search__field', function (e) { 
+    //         // ajax call to get more product codes
+    //         e.preventDefault();
+    //         var vvl = $(this).val()
+
+    //          const TOKEN = $('meta[name="csrf-token"]').attr('content')
+  
+    //         $.ajax({
+    //             url: "{{ route('searchAjax2') }}",
+    //             type: 'POST',
+    //             cache: false,
+    //             data: { _token: TOKEN, data: vvl},
+    //             dataType: 'json',
+    //             success: function(response)
+    //             {
+                    
+    //                 var html = "";
+
+    //                 response.forEach(function(element){
+    //                   html += '<li class="select2-results__option select2-results__option--selectable select2-results__option--highlighted" title="Citizen Certificate" role="option" data-select2-id="select2-data-2617-bi87" aria-selected="true">'+element.title+'</li>';
+                      
+    //                 })
+
+    //                  $()
+
+    //             },
+    //             error: function(){}
+    //         });
+    //     });
+   
+    // });
+
+
+</script>
+
+
+
+
+
+
+
 @endpush

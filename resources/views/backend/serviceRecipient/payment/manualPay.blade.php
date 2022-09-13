@@ -54,7 +54,7 @@
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-md-2"></div>
-                                            <label class="col-md-6 weight_500">Total Amount To Pay: <span class="badge badge-info"><b>{{ $application->final_total }} TK</b></span> </label>
+                                            <label class="col-md-6 weight_500">Total Amount To Pay: <span class="badge badge-info"><b>{{ $application->final_total * $dollar_value }} TK</b></span> </label>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-form-label text-right col-lg-3 col-sm-12 weight_500">Payment With <span class="text-danger">*</span> :</label>
@@ -88,7 +88,6 @@
                                                     <div class="form-group row">
                                                         <label class="col-form-label text-right col-lg-3 col-sm-12">Date <span class="text-danger">*</span> :</label>
                                                         <div class="col-lg-8 col-md-8 col-sm-12">
-                                                            {{-- <input type="text" class="form-control bank_name" name="bank_name" id="bank_name"/> --}}
                                                             <input type="date" class="form-control " name="submission_date" id="">
                                                         </div>
                                                     </div> 
@@ -96,7 +95,7 @@
                                                     <div class="form-group row">
                                                         <label class="col-form-label text-right col-lg-3 col-sm-12">Chalan Number <span class="text-danger">*</span> :</label>
                                                         <div class="col-lg-8 col-md-8 col-sm-12">
-                                                            <input type="text" class="form-control bank_account" name="bank_account" id="bank_account"/>
+                                                            <input type="text" class="form-control bank_account" placeholder="Chalan Number" name="bank_account" id="bank_account"/>
                                                         </div>
                                                     </div> 
                                                     <input type="hidden" name="type" value="" id="value">
@@ -120,32 +119,9 @@
                                                 <div id="mobile_bank" style="display: none">
                                                     <div class="from-group row">
                                                         <label class="col-form-label text-right col-lg-3 col-sm-12 weight_500">Select Mobile Channel <span class="text-danger">*</span> :</label>
-                                                        {{-- <div class="col-lg-8 col-md-8 col-sm-12">
-                                                            <div class="radio-inline" id="method">
-                                                                <label class="col-form-label radio">
-                                                                <input type="radio" class="dataChange" name="method1" value="bKash" id="bkash" >
-                                                                <span></span>bKash</label>
-                                                                <label class="col-form-label radio">
-                                                                    <input type="radio" class="dataChange" name="method1" value="rocket" id="rocket"  >
-                                                                <span></span>Rocket (DBBL)</label>
-
-                                                                <label class="col-form-label radio">
-                                                                <input type="radio" class="dataChange" name="method1" value="nagad" id="nagad"  >
-                                                                <span></span>Nagad</label>
-
-                                                                <label class="col-form-label radio">
-                                                                    <input type="radio" class="dataChange" name="method1" value="uPay" id="upay"  >
-                                                                <span></span>uPay</label>
-
-                                                                <label class="col-form-label radio">
-                                                                    <input type="radio" class="dataChange" name="method1" value="SureCash" id=""  >
-                                                                <span></span>SureCash</label>
-                                                                
-                                                            </div>
-                                                            
-                                                        </div> --}}
+                                                        
                                                         <div class="col-lg-8 col-md-8 col-sm-12" style="margin: 12px 0px 12px 0px;">
-                                                            <select name="mobile_bank" class="form-control bank_name1" id="bank_name1">
+                                                            <select name="bank_name1" class="form-control bank_name1" id="bank_name1">
                                                                 <option value="">Select One</option>
                                                                 <option  value="bKash">bKash</option>
                                                                 <option value="rocket">rocket</option>
@@ -153,6 +129,13 @@
                                                                 <option value="uPay">uPay</option>
                                                                 <option value="SureCash">SureCash</option>
                                                             </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="from-group row">
+                                                        <label class="col-form-label text-right col-lg-3 col-sm-12 weight_500">Transaction ID <span class="text-danger">*</span> :</label>
+                                                        
+                                                        <div class="col-lg-8 col-md-8 col-sm-12" style="margin: 12px 0px 12px 0px;">
+                                                            <input type="text" class="form-control " placeholder="Transaction ID" name="mobile_bank_trxt_id" id="mobile_bank_trxt_id"/>
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
