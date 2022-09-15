@@ -191,6 +191,15 @@ $count ++;
         ]);
     }
 
+    public function findPublicationItemByAjax(Request $request)
+    {
+
+        $sInventory = ServiceInventory::find($request->id);
+
+return json_decode($sInventory);
+       
+    }
+
     // Show census publication page
     public function service($id)
     {

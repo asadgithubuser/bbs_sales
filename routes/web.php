@@ -61,6 +61,7 @@ Route::get('/service/{service_id}', 'Frontend\FrontendController@service')->name
 Route::get('/search-items', 'Frontend\FrontendController@search')->name('search');
 
 Route::get('/free-publication-data', 'Frontend\FrontendController@freePublicationData')->name('freePublicationData');
+Route::post('/find-publication-item', 'Frontend\FrontendController@findPublicationItemByAjax')->name('findPublicationItemByAjax');
 // E-Payment Gateway
 Route::post('/bbs/response-ekpay-ipn-tax', 'Frontend\FrontendController@responseEkpayIpnTax')->name('responseEkpayIpnTax');
 // END E-Payment Gateway
