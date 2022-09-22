@@ -19,7 +19,7 @@
                             <a href="{{route('admin.index')}}" class="text-muted">Dashboard</a>
                         </li>
                         <li class="breadcrumb-item active">
-                            <a class="text-muted">Add Trainer</a>
+                            <!-- <a class="text-muted"></a> -->
                         </li>
                     </ul>
                     <!--end::Breadcrumb-->
