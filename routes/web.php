@@ -38,6 +38,8 @@ Route::get('/link-storage', function() {
     // return what you want
 });
 
+ 
+
 /*
 |--------------------------------------------------------------------------
 | Frontend Routes

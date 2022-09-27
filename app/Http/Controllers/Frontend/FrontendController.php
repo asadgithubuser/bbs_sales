@@ -14,12 +14,18 @@ use App\Imports\CommodityImport;
 use App\Models\ServiceInventory;
 use Session;
 use Excel;
+use Illuminate\Support\Arr;
 
 class FrontendController extends Controller
 {
     // Method for index page
-    public function index()
+    public function index(Request $request)
     {
+
+ 
+
+
+
 
         // set_time_limit(360);
 

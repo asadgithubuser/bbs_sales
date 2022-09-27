@@ -98,41 +98,33 @@
 
               </div>
 
+            <div style="display: none;" class="sinvetoryAjaxShow callout callout-danger">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h5 id="si_title"></h5>
+                        <p id="si_sub_title"></p>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-1">
+                                <a href="" id="si_viewFile" target="_blank">
 
-
-
-                <div style="display: none;" class="sinvetoryAjaxShow callout callout-danger">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <h5 id="si_title"></h5>
-                            <p id="si_sub_title"></p>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="row">
-                                <div class="col-md-1">
-                                    <a href="" id="si_viewFile" target="_blank">
-
-                                        <i class="fa fa-eye"></i>
-                                    </a>
-                                </div>
-                                <div class="col-md-1">
-                                    <a href="" id="si_previewFile" download="">
-                                        <i class="fa fa-download"></i>
-                                    </a>
-                                </div>
-                                
-                                <div class="col-md-4">
-                                    <button class="btn btn-success btn-sm"><a style="text-decoration: none; color:inherit;" href="{{route('application.create')}}">Apply For Hard copy</a></button>
-                                </div>
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                            </div>
+                            <div class="col-md-1">
+                                <a href="" id="si_previewFile" download="">
+                                    <i class="fa fa-download"></i>
+                                </a>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <button class="btn btn-success btn-sm"><a style="text-decoration: none; color:inherit;" href="{{route('application.create')}}">Apply For Hard copy</a></button>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
-
-
-          
+            </div>
        </div>
 @endsection
 @push('frontScript')
@@ -167,8 +159,6 @@
                         document.getElementById("si_viewFile").href = view+'/'+item.attach_file
                         document.getElementById("si_previewFile").href = preview+'/'+item.attach_file
 
-
-                        console.log(item)
                     },
                     error: function(){
 
@@ -242,54 +232,6 @@
         });
         
     </script>
-
-
-
-<script>
-    
-
-    // $(document).ready(function (e) {   
-    //     $("#e_book").select2({
-    //         dropdownCssClass: "productCodesClass"
-    //     });
-
-
-    //     $(document).on('keyup', '.productCodesClass > span.select2-search> input.select2-search__field', function (e) { 
-    //         // ajax call to get more product codes
-    //         e.preventDefault();
-    //         var vvl = $(this).val()
-
-    //          const TOKEN = $('meta[name="csrf-token"]').attr('content')
-  
-    //         $.ajax({
-    //             url: "{{ route('searchAjax2') }}",
-    //             type: 'POST',
-    //             cache: false,
-    //             data: { _token: TOKEN, data: vvl},
-    //             dataType: 'json',
-    //             success: function(response)
-    //             {
-                    
-    //                 var html = "";
-
-    //                 response.forEach(function(element){
-    //                   html += '<li class="select2-results__option select2-results__option--selectable select2-results__option--highlighted" title="Citizen Certificate" role="option" data-select2-id="select2-data-2617-bi87" aria-selected="true">'+element.title+'</li>';
-                      
-    //                 })
-
-    //                  $()
-
-    //             },
-    //             error: function(){}
-    //         });
-    //     });
-   
-    // });
-
-
-</script>
-
-
 
 
 
