@@ -52,10 +52,8 @@
                     </div>
 
                     <div class="card-body">
-                        <div class="table-responsive ajax-data-container pt-3">                    
-                                    
+                        <div class="table-responsive ajax-data-container pt-3">
                         <div class="container">
-                            
                         <div class="selectall">
                             <input type="checkbox" class="mr-2 trainee_candidate_cls22 form-check text-center d-inline" id="traineeListAll" />
                             <span>Select All</span>
@@ -68,7 +66,7 @@
                             <th>Select </th>
                             <th>Name</th>
                             <th>Designation</th>
-                            <th>Department</th>
+                            <th>Wing</th>
                             <th>BBS ID</th>
                             <th>Training Hour</th>
                         </tr>
@@ -83,7 +81,7 @@
                                 <td>{{ $trainee->designation->name_en }}</td>
                                 <td>{{ $trainee->department->name_en }}</td>
                                 <td>bbs id</td>
-                                <td>{{  $course_hour[$trainee->id] }}</td>
+                                <td>@if($course_hour[$trainee->id] >= 100) <span class="text-danger bold">{{  $course_hour[$trainee->id] }}</span> @else {{  $course_hour[$trainee->id] }} @endif</td>
                                 
                             </tr>
                         @empty  

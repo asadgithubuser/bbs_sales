@@ -7,6 +7,7 @@
             <th >Trainer Name</th>
             <th>Fiscal Year</th>
             <th>Month</th>
+            <th>Course Hours</th>
             <th>Total Trainees</th>
             <th>Trainee Type</th>
             <th>Actions</th>
@@ -45,6 +46,7 @@
                         @endif
                     </td>
                     <td>{{ $course->courseDuration->month }}</td>
+                    <td>{{ $course->courseDuration->course_hour }}</td>
                     <td>{{ $course->courseDuration->total_trainees }}</td>
                     <td>{{ $course->courseDuration->trainee_type }}</td>
                     

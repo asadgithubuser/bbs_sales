@@ -10,6 +10,15 @@ use App\Models\ServiceItem;
 use App\Models\Notice;
 use App\Models\Service;
 use App\Models\Payment;
+use App\Models\Role;
+use App\Models\Office;
+use App\Models\Department;
+use App\Models\Level;
+use App\Models\Designation;
+use App\Models\SalesCenter;
+use App\Models\Division;
+use App\Models\District;
+use App\Models\Upazila;
 use Session;
 
 class FrontendController extends Controller
@@ -53,6 +62,29 @@ class FrontendController extends Controller
 
         return view('frontend.officeLogin');
     }
+
+
+    // open registration
+    public function userRegistration()
+    {
+
+        $user = Auth::user();
+ 
+        $roles = Role::where('status', 1)->get();
+        $offices = Office::where('status', 1)->get();
+        $departments = Department::where('status', 1)->get();
+        $levels = Level::get();
+        $designations = Designation::where('status', 1)->get();
+        $salesCenters = SalesCenter::where('status', 1)->get();
+        $divisions = Division::where('status',1)->get();
+        $districts = District::where('status',1)->get();
+        $upazilas = Upazila::where('status',1)->get();
+         
+        return view('frontend.registration', compact('roles', 'offices', 'levels', 'designations', 'departments', 'salesCenters','divisions','districts','upazilas'));
+        
+    }
+
+
 
     // Show census publication page
     public function service($id)

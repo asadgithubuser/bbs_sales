@@ -12,12 +12,13 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th >Course Name</th>
-                <th >Trainer Name</th>
+                <th>Course Name</th>
+                <!-- <th>Trainer Name</th> -->
                 <th>Fiscal Year</th>
                 <th>Month</th>
                 <th>Duration</th>
                 <th>Schedule</th>
+                <th>Course Hour</th>
                 <th>Trainee Type</th>
                 <th>Total Trainees</th>
                 <th>Actions</th>
@@ -79,11 +80,12 @@
                         @endif
 
                             <td>{{ $course->title }}</td>
-                            <td>{{ $course->trainer->name }}</td>
+                            <!-- <td>{{ $course->trainer->name }}</td> -->
                             <td>{{ $course->courseYear->name }}</td>
                             <td>{{ $course->courseDuration->month }}</td>
                             <td>{{ $course->courseDuration->duration }}</td>
                             <td>{{ $course->courseDuration->start_date }} - {{  $course->courseDuration->end_date }}</td>
+                            <td>{{ $course->courseDuration->course_hour }}</td>
                             <td>{{ $course->courseDuration->trainee_type }}</td>
                             <td>{{ $course->courseDuration->total_trainees }}</td>
                             <td>

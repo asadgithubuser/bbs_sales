@@ -9,6 +9,7 @@ use App\Models\TraineeAttendance;
 use App\Models\TrainingCourseListDetails;
 use App\Models\TrainingCourse;
 use App\Models\CourseCertificate;
+use App\Models\TrainingCourseDuration;
 use Response;
 use PDF;
 use Auth;
@@ -232,10 +233,32 @@ class TraineeController extends Controller
     
     public function viewTraineeList(Request $request, $course_id){
         $trainingCourseListDetails = TrainingCourseListDetails::where('course_id', $course_id)->paginate(25);
+
+
+        $trainee_list = User::select('id', 'first_name', 'designation_id', 'department_id')->where('department_id', Auth::user()->department_id)->whereBetween('role_id', ['3', '9'])->where('status', 1)->get();
+
+        foreach($trainee_list as $trainee){
+            $total_course_hour=0;
+            $trainingCourseListDetails2 = TrainingCourseListDetails::where('user_id', $trainee->id)->where('approved', 1)->get();
+
+            foreach($trainingCourseListDetails2 as $details){
+                $trainingCourse = TrainingCourse::where('id', $details->course_id)->where('publish_certificate', 1)->first();
+
+                if($trainingCourse != null){
+                    $c_duration = TrainingCourseDuration::where('course_id', $details->course_id)->first();
+                    $total_course_hour += $c_duration->course_hour;
+                }else{
+                    $total_course_hour += 0;
+                }
+            }
+            $course_hour[$trainee->id] = $total_course_hour;
+        }
+
         return view('backend.admin.calendar.calender',[
             'type' => 'view_trainee_list',
             'trainingCourseListDetails' => $trainingCourseListDetails,
             'allcourseCountStatus' => traineeCourseCountStatus(),
+            'course_hour' => $course_hour,
         ]);
     }
 

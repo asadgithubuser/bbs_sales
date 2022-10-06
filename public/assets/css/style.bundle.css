@@ -24682,6 +24682,9 @@ button.bg-white:hover {
 .font-weight-bolder {
     font-weight: 600!important
 }
+.bold {
+    font-weight: 600!important
+}
 
 .font-italic {
     font-style: italic!important

@@ -5,10 +5,11 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th >Employee Name</th>
-                <th >Dept. Name</th>
+                <th>Employee Name</th>
+                <th>Wing</th>
                 <th>Designation</th>
                 <th>Course Name</th>
+                <th>Course Hours</th>
                 <th>Fiscal Year</th>
                 <th>Comment</th>
                 <th>Actions</th>
@@ -32,6 +33,7 @@
                                 <td align="left">{{ $tcld->user->department->name_en }}</td>
                                 <td>{{ $tcld->user->designation->name_en }}</td>
                                 <td>{{ $tcld->course_training_list->course->title }}</td>
+                                <td>{{ $course_hour[$tcld->user->id] }}</td>
                                 <td>{{ $tcld->course_training_list->course->courseYear->name }}</td>
                                 <td style="color:red">{{ $tcld->claim_modify_trainee->comment }}</td>
                                 <td>

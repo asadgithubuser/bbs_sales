@@ -18,6 +18,7 @@
             <tbody>
                 @php
                     $i = (($courses->currentPage() - 1) * $courses->perPage() + 1);
+
                 @endphp
                     @forelse ($courses as $course)
                         <input type="hidden" name="items[]" value="{{ $course->id }}">

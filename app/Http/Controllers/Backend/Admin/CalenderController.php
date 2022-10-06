@@ -90,10 +90,8 @@ class CalenderController extends Controller
 
     public function calender(Request $request)
     {
-
         $type = $request->type;
         $year = FiscalYear::where('status',true)->first();
-
 
        if($type == 'pending')
         {
@@ -104,8 +102,7 @@ class CalenderController extends Controller
                 'type' => $type,
                 'calender' => $calender
             ]);
-        }
-        elseif($type=='approved')
+        }else if($type=='approved')
         {
             menuSubmenu('course','approvedCalendar');
             $depertments = Department::where('status', 1)->get();
@@ -136,9 +133,11 @@ class CalenderController extends Controller
             menuSubmenu('manage_training','pending_trainee_list');
             $trainingCourseListDetailsIds = TrainingCourseListDetails::pluck('course_id');
             $courses = TrainingCourse::whereIn('id', $trainingCourseListDetailsIds)->latest()->paginate(25);
+
+
             return view('backend.admin.calendar.calender',[
                 'type' => $type,
-                'courses' => $courses
+                'courses' => $courses,
             ]);
         }
 

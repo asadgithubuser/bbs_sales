@@ -234,78 +234,108 @@ class UserController extends Controller
     public function store(Request $request)
     {        
         // dd($request->all());
-        $request->validate([
-            'role_id'           => 'required',
-            'level_id'          => 'required',
-            'office_id'         => 'required',
-            'class'         => 'required',
-            'designation_id'    => 'required',
-            'username'          => 'unique:users',
-            'password'          => 'required|min:8',
-            'first_name'        => 'required|max:255',
-            'last_name'         => 'required|max:255',
-            'present_address'   => 'required',
-            'permanent_address' => 'required',
-            'mobile'            => 'required|unique:users',
-            'email'             => 'required|unique:users',
-            'photo'             => 'max:2048',
-            'signature'         => 'max:1024',
-        ]);
 
-        $user = new User;
-        $user->division_id          = $request->division_id ? $request->division_id : null;
-        $user->upazila_id           = $request->upazila_id ? $request->upazila_id : null;
-        $user->district_id          = $request->district_id ? $request->district_id : null;
+        if($request->open_registration != null){
+            $request->validate([
+                'office_id'         => 'required',
+                'class'         => 'required',
+                'designation_id'    => 'required',
+                'username'          => 'unique:users',
+                'password'          => 'required|min:8',
+                'first_name'        => 'required|max:255',
+                'last_name'         => 'required|max:255',
+                'present_address'   => 'required',
+                'permanent_address' => 'required',
+                'mobile'            => 'required|unique:users',
+                'email'             => 'required|unique:users',
+                'bbs_id'             => 'required|unique:users',
+                'photo'             => 'max:2048',
+                'signature'         => 'max:1024',
+            ]);
+        }else{
+            $request->validate([
+                'role_id'           => 'required',
+                'level_id'          => 'required',
+                'office_id'         => 'required',
+                'class'         => 'required',
+                'designation_id'    => 'required',
+                'username'          => 'unique:users',
+                'password'          => 'required|min:8',
+                'first_name'        => 'required|max:255',
+                'last_name'         => 'required|max:255',
+                'present_address'   => 'required',
+                'permanent_address' => 'required',
+                'mobile'            => 'required|unique:users',
+                'email'             => 'required|unique:users',
+                'bbs_id'             => 'required|unique:users',
+                'photo'             => 'max:2048',
+                'signature'         => 'max:1024',
+            ]);
 
-        $user->role_id              = $request->role_id;
-        $user->sales_center         = $request->salesCenter;
-        $user->level_id             = $request->level_id;
-        $user->office_id            = $request->office_id;
-        $user->class                = $request->class;
-        $user->department_id        = $request->department_id;
-        $user->designation_id       = $request->designation_id;
-        $user->password             = bcrypt($request->password);
-        $user->first_name           = $request->first_name;
-        $user->middle_name          = $request->middle_name;
-        $user->last_name            = $request->last_name;
-        $user->username             = Str::lower($request->first_name.$request->last_name);
-        $user->present_address      = $request->present_address;
-        $user->permanent_address    = $request->permanent_address;
-        $user->country_id           = $request->country_id;
-        $user->postal_code          = $request->postal_code;
-        $user->mobile               = $request->mobile;
-        $user->email                = $request->email;
-        $user->status               = 1;
-        $user->created_by           = Auth::id();
-
-        if($request->hasFile('photo'))
-        {
-            $cp = $request->file('photo');
-            $extension = strtolower($cp->getClientOriginalExtension());
-            $randomFileName = $user->id.'photo'.date('Y_m_d_his').'_'.rand(10000000,99999999).'.'.$extension;
-
-            Storage::disk('public')->put('users/'.$randomFileName, File::get($cp));
-
-            $user->photo = $randomFileName;
-            $user->save();
-      	} 
-
-        if($request->hasFile('signature'))
-        {
-            $cp = $request->file('signature');
-            $extension = strtolower($cp->getClientOriginalExtension());
-            $randomFileName = $user->id.'signature'.date('Y_m_d_his').'_'.rand(10000000,99999999).'.'.$extension;
-
-            Storage::disk('public')->put('signatures/'.$randomFileName, File::get($cp));
-
-            $user->signature = $randomFileName;
-            $user->save();
         }
 
-        $user->save();
+        $existMail = User::where('email', $request->email)->first();
 
-        // return redirect()->route('admin.user.index')->with('success', 'User Created Successfully');
-        return back()->with('success', 'User Created Successfully');
+        if($existMail == null){
+            $user = new User;
+            $user->division_id          = $request->division_id ? $request->division_id : null;
+            $user->upazila_id           = $request->upazila_id ? $request->upazila_id : null;
+            $user->district_id          = $request->district_id ? $request->district_id : null;
+
+            $user->role_id              = $request->role_id;
+            $user->sales_center         = $request->salesCenter;
+            $user->level_id             = $request->level_id;
+            $user->office_id            = $request->office_id;
+            $user->class                = $request->class;
+            $user->department_id        = $request->department_id;
+            $user->designation_id       = $request->designation_id;
+            $user->password             = bcrypt($request->password);
+            $user->first_name           = $request->first_name;
+            $user->middle_name          = $request->middle_name;
+            $user->last_name            = $request->last_name;
+            $user->dob                  = $request->date_of_birth;
+            $user->username             = Str::lower($request->first_name.$request->last_name);
+            $user->present_address      = $request->present_address;
+            $user->permanent_address    = $request->permanent_address;
+            $user->country_id           = $request->country_id;
+            $user->postal_code          = $request->postal_code;
+            $user->mobile               = $request->mobile;
+            $user->email                = $request->email;
+            $user->bbs_id                = $request->bbs_id;
+            $user->status               = 1;
+            $user->created_by           = Auth::id();
+
+            if($request->hasFile('photo'))
+            {
+                $cp = $request->file('photo');
+                $extension = strtolower($cp->getClientOriginalExtension());
+                $randomFileName = $user->id.'photo'.date('Y_m_d_his').'_'.rand(10000000,99999999).'.'.$extension;
+
+                Storage::disk('public')->put('users/'.$randomFileName, File::get($cp));
+
+                $user->photo = $randomFileName;
+                $user->save();
+          	} 
+
+            if($request->hasFile('signature'))
+            {
+                $cp = $request->file('signature');
+                $extension = strtolower($cp->getClientOriginalExtension());
+                $randomFileName = $user->id.'signature'.date('Y_m_d_his').'_'.rand(10000000,99999999).'.'.$extension;
+
+                Storage::disk('public')->put('signatures/'.$randomFileName, File::get($cp));
+
+                $user->signature = $randomFileName;
+                $user->save();
+            }
+
+            $user->save();
+
+            // return redirect()->route('admin.user.index')->with('success', 'User Created Successfully');
+            return back()->with('success', 'User Created Successfully');
+        }else{
+            return back()->with('error', 'The given email exists.');
+        }
     }
 
     /**

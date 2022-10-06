@@ -59,8 +59,8 @@
                     <thead>
                         <tr>
                             <th>Select </th>
-                            <th class="text-left">Name</th>
-                            <th class="text-left">Designation</th>
+                            <th">Name</th>
+                            <th>Designation</th>
                             <th>Department</th>
                             <th>BBS ID</th>
                             <th>Training Hour</th>
@@ -84,7 +84,7 @@
                                 <td>{{ $trainee->designation->name_en }}</td>
                                 <td>{{ $trainee->department->name_en }}</td>
                                 <td>bbs id</td>
-                                <td>{{  $course_hour[$trainee->id] }}</td>
+                                <td>@if( $course_hour[$trainee->id] >= 100) <span class="text-danger bold">{{ $course_hour[$trainee->id] }}</span>@else {{ $course_hour[$trainee->id] }} @endif</td>
                                 
                             </tr>
                         @endforeach                            

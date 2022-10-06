@@ -17,7 +17,13 @@
                <i class="fa fa-sign-in" aria-hidden="true" style="margin-right:10px"></i> Office Login
             </a>
          </div>
+         <div class="py-1"></div>
 
+         <div class="list-group">
+            <a href="{{route('userRegistration')}}" class="list-group-item list-group-item-action  active" style="background-color: #FF0000;border-color: #FF0000;">
+               <i class="fa fa-sign-in" aria-hidden="true" style="margin-right:10px"></i> Registration
+            </a>
+         </div>
          <div class="py-1"></div>
 
          <div class="list-group">

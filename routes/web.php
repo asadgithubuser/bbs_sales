@@ -44,6 +44,7 @@ Route::get('/link-storage', function() {
 |--------------------------------------------------------------------------
 */
 Route::get('/', 'Frontend\FrontendController@index')->name('index');
+Route::get('/registration', 'Frontend\FrontendController@userRegistration')->name('userRegistration');
 Route::get('/notice/{id}', 'Frontend\FrontendController@noticeDetails')->name('notice');
 Route::get('/citizen-login', 'Frontend\FrontendController@citizenLogin')->name('citizenLogin');
 Route::get('/bbs/office/login', 'Frontend\FrontendController@officeLogin')->name('officeLogin');

@@ -3,9 +3,10 @@
             <tr>
                 <th>#</th>
                 <th>Employee Name</th>
-                <th>Dept. Name</th>
+                <th>Wing</th>
                 <th>Designation</th>
                 <th>Course Name</th>
+                <th>Course Hours</th>
                 <th>Fiscal Year</th>
                 <th>Actions</th>
             </tr>
@@ -24,9 +25,10 @@
                         <td>{{ $tcld->user->department->name_en }}</td>
                         <td>{{ $tcld->user->designation->name_en }}</td>
                         <td>{{ $tcld->course_training_list->course->title }}</td>
+                        <td>{{ $course_hour[$tcld->user->id] }}</td>
                         <td>{{ $tcld->course_training_list->course->courseYear->name }}</td>
                         <td>
-                            <a href="" class="btn btn-primary btn-sm" title="show"><i class="la la-eye"></i></a>
+                            <a href=" " class="btn btn-primary btn-sm" title="show"><i class="la la-eye"></i></a>
                         </td>
                     </tr>
                     @php
