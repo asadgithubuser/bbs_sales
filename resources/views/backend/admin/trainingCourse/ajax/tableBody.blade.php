@@ -27,7 +27,7 @@
                         @endif
                         <tr>
                             <td>{{ $i }}</td>
-                            <td>{{ $course->title }}</td>
+                            <td>{{ $course->courseTitle->title }}</td>
                             <td>{{ $course->trainer ? $course->trainer->name : '' }}</td>
                             <td>{{ $course->courseYear ?  $course->courseYear->name : ''}}</td>
                             <td>{{ $course->courseDuration->month }}</td>

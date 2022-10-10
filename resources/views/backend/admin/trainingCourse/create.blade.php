@@ -56,14 +56,19 @@
                                         <div class="row">
                                         <div class="col-lg-6">
                                             <div class="form-group row">
-                                                <label class="col-form-label col-lg-12 col-sm-12">Course Title<span class="text-danger">
+                                                <label class="col-form-label col-lg-12 col-sm-12"> Course Title<span class="text-danger">
                                                         *</span></label>
                                                 <div class="col-lg-12 col-md-12 col-sm-12">
-                                                    <input type="text" 
-                                                        placeholder="Course Title" class="form-control ajax-course-details-data-insert" name="title"
-                                                        required>
+                                                    <select name="title_id" id="" class="form-control ajax-course-details-data-insert">
+                                                        <option value="">-- Select Course Title --</option>
+                                                        @foreach ($courseTitles as $title)
+                                                            <option value="{{ $title->id }}">{{ $title->title }}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
+
+
                                             <div class="form-group row">
                                                 <label class="col-form-label col-lg-12 col-sm-12">Fiscal Year<span class="text-danger">
                                                         *</span></label>
@@ -94,9 +99,8 @@
                                         <div class="form-group row">
                                                 <label class="col-form-label col-lg-12 col-sm-12">Course Director</label>
                                                 <div class="col-lg-12 col-md-12 col-sm-12">
-                                                
                                                     <input type="hidden"  name="director" value="{{ $coursedirector->id }}">
-                                                    <input type="text" class="form-control" value="{{ $coursedirector->first_name.' '.$coursedirector->middle_name.' '.$coursedirector->last_name }}" >
+                                                    <input type="text" class="form-control" value="{{ $coursedirector->first_name.' '.$coursedirector->middle_name.' '.$coursedirector->last_name }}" readonly >
                                                 </div>
                                             </div>
 
@@ -139,7 +143,7 @@
                                                     <!--Left-->
                                                     <div class="col-md-6">
                                                         <div class="form-group row">
-                                                            <label class="col-form-label text-right col-lg-4 col-sm-12">Course Hours<span
+                                                            <label class="col-form-label text-right col-lg-5 col-md-5 col-sm-12">Course Hours<span
                                                                     class="text-danger">
                                                                     *</span></label>
                                                             <div class="col-lg-6 col-md-6 col-sm-12">
@@ -148,7 +152,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
-                                                            <label class="col-form-label text-right col-lg-4 col-sm-12">Course Duration<span
+                                                            <label class="col-form-label text-right col-lg-5 col-md-5 col-sm-12">Course Duration(Day)<span
                                                                     class="text-danger">
                                                                     *</span></label>
                                                             <div class="col-lg-6 col-md-6 col-sm-12">
@@ -158,7 +162,7 @@
                                                         </div>
 
                                                         <div class="form-group row">
-                                                            <label class="col-form-label text-right col-lg-4 col-sm-12">Total Trainees<span
+                                                            <label class="col-form-label text-right col-lg-5 col-md-5 col-sm-12">Total Trainees<span
                                                                     class="text-danger">
                                                                     *</span></label>
                                                             <div class="col-lg-6 col-md-6 col-sm-12">
@@ -167,13 +171,13 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="form-group row">
-                                                            <label class="col-form-label text-right col-lg-4 col-sm-12">Trainer Allowance</label>
+<!--                                                         <div class="form-group row">
+                                                            <label class="col-form-label text-right col-lg-5 col-md-5 col-sm-12">Trainer Allowance</label>
                                                             <div class="col-lg-6 col-md-6 col-sm-12">
                                                                 <input type="number" placeholder="Trainer Allowance" class="form-control"
                                                                     name="total_trainer_allowance" value="{{ old('total_trainer_allowance') }}"  step="0.01">
                                                             </div>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
 
                                                     <!--Right-->
@@ -204,12 +208,17 @@
                                                                     class="text-danger">
                                                                     *</span></label>
                                                             <div class="col-lg-6 col-md-6 col-sm-12">
-                                                                <select name="trainee_type" id="month" class="form-control" required>
-                                                                    <option value="">-- Selet Trainee Type --</option>
-                                                                    <option value="Officer">Officer</option>
-                                                                    <option value="Employee">Employee</option>
-                                                                    <option value="Officer/Employee">Officer/Employee</option>
-                                                                </select>
+            <select name="trainee_type" id="month" class="form-control" required>
+                <option value="">-- Selet Trainee Type(Grade) --</option>
+                <option value="9_to_above">9 To Above(Grade)</option>
+                <option value="10_to_above">10 To Above(Grade)</option>
+                <option value="10_16_grade">10 To 16(Grade)</option>
+                <option value="11_16_grade">11 To 16(Grade)</option>
+                <option value="17_20_grade">17 To 20(Grade)</option>
+                <option value="">(Grade)</option>
+                <option value="">(Grade)</option>
+                <option value="">(Grade)</option>
+            </select>
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
@@ -224,14 +233,14 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group row">
+<!--                                                         <div class="form-group row">
                                                             <label class="col-form-label text-right col-lg-4 col-sm-12">Trainees Allowance</label>
                                                             <div class="col-lg-6 col-md-6 col-sm-12">
                                                                 <input type="number" placeholder="Trainees Allowance" class="form-control"
                                                                     name="total_trainees_allowance" value="{{ old('total_trainees_allowance') }}"
                                                                     step="0.01">
                                                             </div>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                             
                                                 </div>
@@ -240,7 +249,7 @@
                                                 
                                             <div class="row">
                                             <div class="col-5 offset-8">
-                                                <button type="submit" class="btn btn-success" >Create Course</button>
+                                                <button type="submit" class="btn btn-primary" >Create Course</button>
                                             </div>
                                         </div>
                                     </div>

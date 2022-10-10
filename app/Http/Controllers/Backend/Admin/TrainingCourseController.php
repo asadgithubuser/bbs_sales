@@ -13,7 +13,9 @@ use App\Models\CourseTrainingList;
 use App\Models\ClaimModifyTraineeList;
 use App\Models\TrainingCourseListDetails;
 use App\Models\TraineeEvaluationForm;
+use App\Models\TemplateSetting;
 use App\Models\User;
+use App\Models\CourseTitle;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -94,11 +96,14 @@ class TrainingCourseController extends Controller
             $trainers = TrainingTrainer::orderBy('id','desc')->get();
             $coursedirector = User::where('role_id', 3)->first();
             $courseCoordinator = User::where('role_id', Auth::user()->role_id)->first();
-        
+            $courseTitles = CourseTitle::where('status', 'Active')->get();
+
+
             return view('backend.admin.trainingCourse.create',[
                 'course' => $exist,
                 'years' => $years,
                 'trainers' => $trainers,
+                'courseTitles' => $courseTitles,
                 'coursedirector' =>$coursedirector,
                 'courseCoordinator' => $courseCoordinator
             ]);
@@ -120,7 +125,7 @@ class TrainingCourseController extends Controller
     public function store(Request $request)
     {
         $course = new TrainingCourse;
-        $course->title = $request->title;
+        $course->course_title_id = $request->title_id;
         $course->fiscal_year_id = $request->fiscal_year;
         $course->trainer_id  = $request->trainer;
         $course->course_director_id = $request->director;
@@ -223,9 +228,11 @@ class TrainingCourseController extends Controller
         $courseDuration = TrainingCourseDuration::where('course_id', $course->id)->first();
         $coursedirector = User::where('role_id', 3)->first();
         $courseCoordinator = User::where('role_id', Auth::user()->role_id)->first();
+        $courseTitles = CourseTitle::where('status', 'Active')->get();
 
         return view('backend.admin.trainingCourse.edit',[
             'course'=>$course,
+            'courseTitles' => $courseTitles,
             'type' => $type,
             'years' => $years,
             'trainers' => $trainers,
@@ -247,7 +254,7 @@ class TrainingCourseController extends Controller
     {
        
         $course = TrainingCourse::find($request->course_idd);
-        $course->title = $request->title;
+        $course->course_title_id = $request->title_id;
         $course->fiscal_year_id = $request->fiscal_year;
         $course->trainer_id  = $request->trainer;
         $course->course_director_id = $request->director;
@@ -1141,6 +1148,61 @@ class TrainingCourseController extends Controller
         ]);
        
         
+    }
+        
+   
+    public function maxCourseHour(Request $request)
+    {
+        menuSubmenu('all_course_setting','maximum_course_hourse');
+        $max_hours = TemplateSetting::where('type', 'course_max_hours')->first();
+
+        return view('backend.admin.allSettings.maximum_course_hourse', compact('max_hours'));
+       
+    }
+    public function courseTitle(Request $request)
+    {
+        menuSubmenu('course','courseTitle');
+        $courseTitles = CourseTitle::where('status', 'Active')->get();
+
+        return view('backend.admin.trainingCourse.course_title', compact('courseTitles'));
+    }
+    public function storeCourseTitle(Request $request)
+    {
+         $title = CourseTitle::create([
+            'title' => $request->courseTitle,
+            'status' => 'Active'
+         ]);
+
+        if($title){
+            return back()->with('success','Course title stored successfully.');
+        }else{
+            return back()->with('error','Course title NOT stored.');
+        }
+    }
+        
+    public function storeMaxHours(Request $request)
+    {
+        
+        $max_hours = TemplateSetting::where('type', 'course_max_hours')->first();
+            if($request->max_hours > 0){
+                $storeHours = $max_hours->update([
+                    'type' => 'course_max_hours',
+                    'service_id' => $request->max_hours,
+                    'service_item_id' => null,
+                    'header' => null,
+                    'footer' => null,
+                    'body' => null,
+                    'status' => 1
+                ]);
+            }else{
+                return back()->with('error','Maximum course hours will be greater then 0.');
+            }
+        
+        if($storeHours){
+            return back()->with('success','Maximum course hours updated successfully.');
+        }else{
+            return back()->with('error','Maximum course hours NOT stored.');
+        }
     }
         
 

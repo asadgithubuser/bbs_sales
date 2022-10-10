@@ -80,7 +80,7 @@
                                                     <td>
                                                         {{ $i++ }}
                                                     </td>
-                                                    <td align="left">{{ $courseCalendar->course->title }}</td>
+                                                    <td align="left">{{ $courseCalendar-> course->courseTitle->title  }}</td>
                                                     <td align="left">{{ $courseCalendar->course->courseDuration->month }}</td>
                                                     <td>{{ $courseCalendar->course->courseDuration->duration }}</td>
                                                     <td>{{ $courseCalendar->course->courseDuration->trainee_type }}</td>

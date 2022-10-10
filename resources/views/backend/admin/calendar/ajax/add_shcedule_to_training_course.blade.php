@@ -44,7 +44,7 @@
                     <div class="col-lg-12">
                         <div class="card card-custom example example-compact">
                             <div class="card-header">
-                                <h3 class="card-title font-weight-normal">Add Schedule and Trainer to <strong class="mr-2 ml-2">{{ $course->title }}</strong> Course</h3>
+                                <h3 class="card-title font-weight-normal">Add Schedule and Trainer to <strong class="mr-2 ml-2">{{ $course->courseTitle->title  }}</strong> Course</h3>
                             </div>
                             <div class="card-body">
                                 <div class="ajax-data-container pt-3">

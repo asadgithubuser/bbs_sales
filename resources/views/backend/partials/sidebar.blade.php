@@ -1092,6 +1092,15 @@
                                 </li>
 
                             @if(Auth::user()->role_id == 4 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2)   
+                                <li class="menu-item {{ session('lsbsm') == 'courseTitle' ? ' menu-item-active ' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('admin.course.courseTitle') }}" class="menu-link">
+                                        <i class="menu-bullet menu-bullet-dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="menu-text">Add Course Title</span>
+                                    </a>
+                                </li> 
                                 <li class="menu-item {{ session('lsbsm') == 'createCourse' ? ' menu-item-active ' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('admin.course.create') }}" class="menu-link">
@@ -1181,7 +1190,7 @@
                     </li>
                 @endcan
                 @can('manage_course')
-                    <li class="menu-item menu-item-submenu {{ session('lsbm') == 'maximum_course_hourse' ? ' menu-item-open ' : '' }}"
+                    <li class="menu-item menu-item-submenu {{ session('lsbm') == 'all_course_setting' ? ' menu-item-open ' : '' }}"
                         aria-haspopup="true" data-menu-toggle="hover">
                         <a href="javascript:;" class="menu-link menu-toggle">
                             <span class="svg-icon menu-icon">
@@ -1213,11 +1222,9 @@
                                     </span>
                                 </li>
 
-                             
-
                                 <li class="menu-item {{ session('lsbsm') == 'maximum_course_hourse' ? ' menu-item-active ' : '' }}"
                                     aria-haspopup="true">
-                                    <a href="{{ route('admin.calender.calender', ['type' => 'training_course_list_cd']) }}" class="menu-link">
+                                    <a href="{{ route('admin.course.maxCourseHour') }}" class="menu-link">
                                         <i class="menu-bullet menu-bullet-dot">
                                             <span></span>
                                         </i>

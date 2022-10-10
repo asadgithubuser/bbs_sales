@@ -60,9 +60,12 @@
                                                 <label class="col-form-label col-lg-12 col-sm-12">Course Title<span class="text-danger">
                                                         *</span></label>
                                                 <div class="col-lg-12 col-md-12 col-sm-12">
-                                                    <input type="text" 
-                                                        value="{{ $course->title }}" class="form-control ajax-course-details-data-insert" name="title"
-                                                        required>
+                                                    <select name="title_id" id="" class="form-control ajax-course-details-data-insert">
+                                                        <option value="">-- Select Course Title --</option>
+                                                        @foreach ($courseTitles as $title)
+                                                            <option value="{{ $title->id }}" @if($course->courseTitle->id == $title->id) selected @endif >{{ $title->title }}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -167,12 +170,12 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="form-group row">
+                                                    <!--     <div class="form-group row">
                                                             <label class="col-form-label text-right col-lg-4 col-sm-12">Trainer Allowance</label>
                                                             <div class="col-lg-6 col-md-6 col-sm-12">
                                                             <input type="number" class="form-control" value="{{ $course->courseDuration->total_trainer_allowance }}" name="total_trainer_allowance" >
                                                             </div>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
 
                                                     <!--Right-->
@@ -223,13 +226,13 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group row">
+                                                      <!--   <div class="form-group row">
                                                             <label class="col-form-label text-right col-lg-4 col-sm-12">Trainees Allowance</label>
                                                             <div class="col-lg-6 col-md-6 col-sm-12">
                                                                 <input type="number" class="form-control" value="{{ $course->courseDuration->total_trainee_allowance }}" name="total_trainees_allowance">
 
                                                             </div>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                             
                                                 </div>

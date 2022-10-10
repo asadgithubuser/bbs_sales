@@ -26,7 +26,7 @@
                         @foreach ($trainingCourseDetails as $tcld)
                                 <tr>
                                     <td>{{ $i++ }}</td>
-                                    <td>{{ $tcld->course_training_list->course->title }}</td>
+                                    <td>{{ $tcld->course_training_list-> course->courseTitle->title  }}</td>
                                     <td>{{ $tcld->course_training_list->course->trainer->name }}</td>
                                     <td>{{ $tcld->course_training_list->course->courseYear->name }}</td>
                                     <td>{{ $tcld->course_training_list->course->courseDuration->month }}</td>

@@ -54,7 +54,7 @@
                                     <select name="selected_course_id" id="selected_course_id" class="form-control ajax-courert">
                                         <option value="00">--Select Fiscal Year--</option>
                                         @foreach ($courses as $course)
-                                            <option value="{{ $course->id }}">{{ $course->title }}</option>
+                                            <option value="{{ $course->id }}">{{ $course->courseTitle->title  }}</option>
                                         @endforeach
                                     </select>
                                 </div>

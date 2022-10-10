@@ -460,7 +460,16 @@ Route::group(['middleware' => ['AuthGates'], 'prefix' => '/bbs', 'as' => 'admin.
         Route::get('/update/{course}/{type?}', ['uses' => 'Backend\Admin\TrainingCourseController@courseUpdate'])->name('courseUpdate');
         Route::post('/addCourseDuration',['uses' => 'Backend\Admin\TrainingCourseController@addCourseDuration'])->name('addCourseDurationToCourse');
         Route::post('/addCourseCurriculam/{course}', ['uses' => 'Backend\Admin\TrainingCourseController@addCourseCurriculam'])->name('addCourseCurriculam');
+        Route::get('/course-title', ['uses' => 'Backend\Admin\TrainingCourseController@courseTitle'])->name('courseTitle');
+        Route::post('/course-title', ['uses' => 'Backend\Admin\TrainingCourseController@storeCourseTitle'])->name('storeCourseTitle');
         
+
+        // set course max hour
+        Route::get('/get-course-max-hour',['uses'=>'Backend\Admin\TrainingCourseController@maxCourseHour'])->name('maxCourseHour');
+        Route::post('/set-course-max-hour',['uses'=>'Backend\Admin\TrainingCourseController@storeMaxHours'])->name('storeMaxHours');
+      
+
+
         // course duration edit
         Route::get('/edit-course-duration/{courseDuration}',['uses'=>'Backend\Admin\TrainingCourseController@editCourseDuration'])->name('editCourseDuration');
         Route::get('/add-schedule-and-curriculam',['uses'=>'Backend\Admin\TrainingCourseController@addScheduleAndCurriculam'])->name('addScheduleAndCurriculam');

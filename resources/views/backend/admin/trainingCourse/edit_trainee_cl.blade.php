@@ -47,7 +47,7 @@
                     <!--begin::Card-->
                     <div class="card card-custom example example-compact">
                     <div class="card-header">
-                        <h3 class="card-title font-weight-normal">Create Trainee List for<strong class="ml-2" style="font-weight:700 !important;"> {{ $trainign_course_list->course->title }}</strong></h3>
+                        <h3 class="card-title font-weight-normal">Create Trainee List for<strong class="ml-2" style="font-weight:700 !important;"> {{ $trainign_course_list->course->courseTitle->title }}</strong></h3>
                         
                     </div>
                     <div class="card-body">
@@ -59,7 +59,7 @@
                     <thead>
                         <tr>
                             <th>Select </th>
-                            <th">Name</th>
+                            <th>Name</th>
                             <th>Designation</th>
                             <th>Department</th>
                             <th>BBS ID</th>

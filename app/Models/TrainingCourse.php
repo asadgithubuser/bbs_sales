@@ -9,6 +9,11 @@ class TrainingCourse extends Model
 {
     use HasFactory;
 
+    public function courseTitle()
+    {
+        return $this->belongsTo(courseTitle::class,'course_title_id');
+    }
+
     public function courseYear()
     {
         return $this->belongsTo(FiscalYear::class,'fiscal_year_id');

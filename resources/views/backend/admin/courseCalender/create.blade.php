@@ -77,7 +77,7 @@
                                                             
                                                             <input type="checkbox" value="{{ $course->id }}" name="items[]" class="checkboxPrimary3">
                                                         </td>
-                                                        <td>{{ ucfirst($course->title) }}</td>
+                                                        <td>{{ ucfirst($course->courseTitle->title ) }}</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -113,7 +113,7 @@
                                                     <tr>
                                                         <td>{{ $loop->iteration }}</td>
                                                         
-                                                        <td>{{ ucfirst($course->title) }}</td>
+                                                        <td>{{ ucfirst($course->courseTitle->title ) }}</td>
                                                         <td>{{ $course->courseYear ? $course->courseYear->name :'' }}</td>
                                                         <td>
                                                             <a href="{{ route('admin.calender.remove',$course) }}"

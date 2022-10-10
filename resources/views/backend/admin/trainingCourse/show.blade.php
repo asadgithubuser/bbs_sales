@@ -42,7 +42,7 @@
                         <!--begin::Card-->
                         <div class="card card-custom example example-compact">
                             <div class="card-header">
-                                <h3 class="card-title">{{ $course->title }}</h3> 
+                                <h3 class="card-title">{{ $course->courseTitle->title }}</h3> 
                                 
                                 @if($type == 'modify_in_details')
                                     <button  style="height: 40px; margin-top: 15px;" type="button" onclick="createCourse_modal_btn(this.id)" id="{{ $course->id }}" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#claimForModify">Send For Modify</button>
@@ -66,7 +66,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <td>{{$course->title}}</td>
+                                                        <td>{{$course->courseTitle->title}}</td>
                                                         <td>{{$course->courseYear ? $course->courseYear->name : ''}}</td>
                                                         
                                                         <td>{{$course->courseDirector ? $course->courseDirector->first_name.' '.$course->courseDirector->middle_name.' '.$course->courseDirector->last_name : ''}}</td>

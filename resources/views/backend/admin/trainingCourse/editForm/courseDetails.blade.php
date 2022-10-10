@@ -14,7 +14,7 @@
                     <input type="text"
                         data-url="{{ route('admin.course.courseUpdate', ['course' => $course, 'type' => 'title']) }}"
                         placeholder="Course Title" class="form-control ajax-course-details-data-insert" name="title"
-                        value="{{ $course->title ? $course->title : old('title') }}" required>
+                        value="{{ $course->courseTitle->title  ? $course->courseTitle->title  : old('title') }}" required>
                 </div>
             </div>
             <div class="form-group row">

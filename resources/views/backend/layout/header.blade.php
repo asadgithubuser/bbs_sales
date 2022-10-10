@@ -110,7 +110,7 @@
 										<li class="menu-item menu-item-open menu-item-here menu-item-submenu menu-item-rel menu-item-open menu-item-here menu-item-active">
 											<a href="{{ route('admin.index') }}" class="">
 
-												<span><h2>বিবিএস ড্যাশবোর্ড</h2></span>
+												<span><h2>বিবিএস - ট্রেনিং ড্যাশবোর্ড</h2></span>
 												<i class="menu-arrow"></i>
 											</a>
 										</li>

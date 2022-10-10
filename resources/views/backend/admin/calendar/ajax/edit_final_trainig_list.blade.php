@@ -43,7 +43,7 @@
                         <!--begin::Card-->
                         <div class="card card-custom example example-compact">
                             <div class="card-header">
-                                <h3 class="card-title font-weight-normal">Update Training List for <strong class="font-weight-700 ml-2">{{ $course->title }}</strong></h3>
+                                <h3 class="card-title font-weight-normal">Update Training List for <strong class="font-weight-700 ml-2">{{ $course->courseTitle->title  }}</strong></h3>
                                 
                             </div>
                             <div class="card-body">
@@ -77,7 +77,7 @@
                                                     <td align="left">{{ $tcld->user->first_name }}</td>
                                                     <td align="left">{{ $tcld->user->department->name_en }}</td>
                                                     <td>{{ $tcld->user->designation->name_en }}</td>
-                                                    <td>{{ $tcld->course_training_list->course->title }}</td>
+                                                    <td>{{ $tcld->course_training_list-> course->courseTitle->title  }}</td>
                                                     <td>{{ $tcld->course_training_list->course->courseYear->name }}</td>
                                                     <td>Batch-@if(isset($tcld->course_duration)){{ $tcld->course_duration->batch_no }} @endif</td>
                                                     <td>@if(isset($tcld->course_curriculam)){{ $tcld->course_curriculam->subject_title }}@endif</td>

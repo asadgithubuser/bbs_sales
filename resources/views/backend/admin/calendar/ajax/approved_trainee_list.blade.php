@@ -30,7 +30,7 @@
                                 <td align="left">{{ $tcld->user->first_name }}</td>
                                 <td align="left">{{ $tcld->user->department->name_en }}</td>
                                 <td>{{ $tcld->user->designation->name_en }}</td>
-                                <td>{{ $tcld->course_training_list->course->title }}</td>
+                                <td>{{ $tcld->course_training_list-> course->courseTitle->title  }}</td>
                                 <td>{{ $tcld->course_training_list->course->courseYear->name }}</td>
                                 <td>Batch-{{ $tcld->course_duration->batch_no }}</td>
                                 <td>{{ $tcld->course_curriculam->subject_title }}</td>

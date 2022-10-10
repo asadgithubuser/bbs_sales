@@ -21,7 +21,7 @@
                 @if(isset($trainingList->course) && $trainingList->course != null)
                     <tr>
                         <td>{{ $i }}</td>
-                        <td>{{ $trainingList->course ? $trainingList->course->title : '' }}</td>
+                        <td>{{ $trainingList->course ? $trainingList-> course->courseTitle->title  : '' }}</td>
                         <td>
                             {{ $trainingList->course ? $trainingList->course->trainer->name : '' }}
                         </td>

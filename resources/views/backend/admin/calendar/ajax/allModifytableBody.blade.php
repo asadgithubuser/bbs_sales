@@ -29,7 +29,7 @@
                     @if($cal->course->forward == 1)
                         <tr>
                             <td>{{ $i }}</td>
-                            <td>{{$cal->course ? $cal->course->title : '' }}</td>
+                            <td>{{$cal->course ? $cal-> course->courseTitle->title  : '' }}</td>
                             <td>
                                 @if ($course = $cal->course)
                                     {{ $course->trainer ? $course->trainer->name : '' }}
