@@ -208,17 +208,15 @@
                                                                     class="text-danger">
                                                                     *</span></label>
                                                             <div class="col-lg-6 col-md-6 col-sm-12">
-            <select name="trainee_type" id="month" class="form-control" required>
-                <option value="">-- Selet Trainee Type(Grade) --</option>
-                <option value="9_to_above">9 To Above(Grade)</option>
-                <option value="10_to_above">10 To Above(Grade)</option>
-                <option value="10_16_grade">10 To 16(Grade)</option>
-                <option value="11_16_grade">11 To 16(Grade)</option>
-                <option value="17_20_grade">17 To 20(Grade)</option>
-                <option value="">(Grade)</option>
-                <option value="">(Grade)</option>
-                <option value="">(Grade)</option>
-            </select>
+                                                            <select name="trainee_type" id="month" class="form-control" required>
+                                                                <option value="">-- Trainee Type(Grade) --</option>
+                                                                <option value="9_to_above">9 To Above (Grade)</option>
+                                                                <option value="10_to_above">10 To Above (Grade)</option>
+                                                                <option value="10_16_grade">10 To 16 (Grade)</option>
+                                                                <option value="11_16_grade">11 To 16 (Grade)</option>
+                                                                <option value="17_20_grade">17 To 20 (Grade)</option>
+                                                                <option value="all_grade">All (Grade)</option>
+                                                            </select>
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">

@@ -3,7 +3,7 @@
         <tr>
             <th>Name</th>
             <th>Designation</th>
-            <th>Department</th>
+            <th>Wing</th>
             <th>Course Name</th>
             <th>Duration</th>
             <th>Present</th>

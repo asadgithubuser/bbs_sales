@@ -61,7 +61,7 @@
                             <th>Select </th>
                             <th>Name</th>
                             <th>Designation</th>
-                            <th>Department</th>
+                            <th>Wing</th>
                             <th>BBS ID</th>
                             <th>Training Hour</th>
                         </tr>

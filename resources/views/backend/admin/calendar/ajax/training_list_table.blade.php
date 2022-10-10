@@ -15,6 +15,7 @@
     </thead>
         <tbody>
             @php
+                $courseHour = App\Models\TemplateSetting::where('type', 'course_max_hours')->first()->service_id;
                 $i = (( $trainingCourseList->currentPage() - 1) * $trainingCourseList->perPage() + 1);
             @endphp
             @forelse ($trainingCourseList as $trainingList)
@@ -31,7 +32,8 @@
                         </td>
 
                         <td>{{ $trainingList->course ? $trainingList->course->courseDuration->month : '' }}</td>
-                        <td>{{ $trainingList->course ? $trainingList->course->courseDuration->course_hour : '' }}</td>
+                        <td> @if(isset($trainingList->course)) @if($courseHour < $trainingList->course->courseDuration->course_hour) <span class="text-danger bold">{{$trainingList->course->courseDuration->course_hour}}</span> @else <span class="">{{$trainingList->course->courseDuration->course_hour}}</span> @endif @else '' @endif</td> 
+
                         <td>{{ $trainingList->course ? $trainingList->course->courseDuration->total_trainees : '' }}</td>
                         <td>{{ $trainingList->course ? $trainingList->course->courseDuration->trainee_type : '' }}</td>
                         <td>

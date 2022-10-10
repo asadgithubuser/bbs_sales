@@ -21,7 +21,7 @@
                                 <th>Attendance</th>
                                 <th >Name</th>
                                 <th >Designation</th>
-                                <th>Department</th>
+                                <th>Wing</th>
                                 <th>BBS ID</th>
                             </tr>
                         </thead>

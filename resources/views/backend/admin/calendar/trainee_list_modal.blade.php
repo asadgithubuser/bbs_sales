@@ -17,7 +17,7 @@
                                 <th>Select</th>
                                 <th class="text-left">Name</th>
                                 <th class="text-left">Designation</th>
-                                <th>Department</th>
+                                <th>Wing</th>
                                 <th>BBS ID</th>
                                 <th>Training Hour</th>
                                 <th>Select Batch</th>
