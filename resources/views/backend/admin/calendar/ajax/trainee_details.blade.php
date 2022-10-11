@@ -41,7 +41,7 @@
                         <!--begin::Card-->
                         <div class="card card-custom example example-compact">
                             <div class="card-header">
-                                <h3 class="card-title">{{ $training course->courseTitle->title  }}</h3>
+                                <h3 class="card-title">{{ $trainingCourse->courseTitle->title  }}</h3>
                             </div>
                             <div id="tab_header_tabs" class="trainee_details_card_header">
                                 <ul class="nav details_trainee_tab nav-tabs" id="myTab" role="tablist">

@@ -15,6 +15,7 @@ use App\Models\TrainingCourseListDetails;
 use App\Models\TraineeEvaluationForm;
 use App\Models\TemplateSetting;
 use App\Models\User;
+use App\Models\Department;
 use App\Models\CourseTitle;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
@@ -1033,8 +1034,8 @@ class TrainingCourseController extends Controller
                 array_push($training_course_ids, $trainingList->id);
             }
         }
-        $trainingCourseList = CourseTrainingList::whereIn('id', $training_course_ids)->latest()->paginate(25);
-        
+        $trainingCourseList = CourseTrainingList::whereIn('id', $training_course_ids)->orderBy('updated_at', 'DESC')->paginate(25);
+ 
         return view('backend.admin.calendar.calender',[
             'type' => $type,
             'trainingCourseList' => $trainingCourseList,
@@ -1166,6 +1167,54 @@ class TrainingCourseController extends Controller
 
         return view('backend.admin.trainingCourse.course_title', compact('courseTitles'));
     }
+
+
+    public function showCourseReport(Request $request)
+    {
+        menuSubmenu('trainig_report','showCourseReport');
+        $department_id = $request->depertment_id;
+        $fiscal_id = $request->fiscal_id;
+        $course_name = $request->course_name;
+
+        $courses = new TrainingCourse;
+
+        if($department_id != null){
+            $departments = CourseTrainingList::where('status', 1)->pluck('department_id');
+
+            dd($departments);
+
+
+
+
+            $courses = $courses->where('fiscal_year_id', $fiscal_id);    
+        }
+
+        if($fiscal_id != null){
+            $courses = $courses->where('fiscal_year_id', $fiscal_id);    
+        }
+
+        if($course_name != null){
+            $title_id = CourseTitle::where('title', 'like', "%{$course_name}%")->first()->id;
+            $courses = $courses->where('course_title_id', $title_id);    
+        }
+
+
+
+        $depertments = Department::where('status', 1)->get();
+        $fiscal_all = FiscalYear::select('id', 'name')->get();
+        $courses = $courses->latest()->paginate(25);
+ 
+        return view('backend.admin.report.course_summary_report',[ 
+            'courses' => $courses,
+            'depertments' => $depertments,
+            'fiscal_all' => $fiscal_all,
+        ]);
+
+
+ 
+    }
+
+
     public function storeCourseTitle(Request $request)
     {
          $title = CourseTitle::create([

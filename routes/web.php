@@ -469,6 +469,10 @@ Route::group(['middleware' => ['AuthGates'], 'prefix' => '/bbs', 'as' => 'admin.
         Route::post('/set-course-max-hour',['uses'=>'Backend\Admin\TrainingCourseController@storeMaxHours'])->name('storeMaxHours');
       
 
+        // training report
+        Route::get('/summary-report',['uses'=>'Backend\Admin\TrainingCourseController@showCourseReport'])->name('showCourseReport');
+
+
 
         // course duration edit
         Route::get('/edit-course-duration/{courseDuration}',['uses'=>'Backend\Admin\TrainingCourseController@editCourseDuration'])->name('editCourseDuration');

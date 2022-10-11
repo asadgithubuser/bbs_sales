@@ -148,6 +148,7 @@ class CalenderController extends Controller
 
             
             $courses = TrainingCourse::where(['status'=> 3])->latest()->paginate(25);
+
             return view('backend.admin.calendar.calender',[
                 'type' => $type,
                 'courses' => $courses,
@@ -159,8 +160,7 @@ class CalenderController extends Controller
             menuSubmenu('course','training_course_list_cd');
             $depertments = Department::where('status', 1)->get();
             $courses = TrainingCourse::where('status', 3)->where('forward', 2)->latest()->paginate(25);
-
-            
+     
             return view('backend.admin.calendar.calender',[
                 'type' => $type,
                 'courses' => $courses,
@@ -351,7 +351,8 @@ class CalenderController extends Controller
             'course_id' => $course_id,
             'department_id' => json_encode($dept_ids),
             'status' => 1,
-            'created_by' => Auth::user()->id
+            'created_by' => Auth::user()->id,
+            'updated_at' => now()->format('Y-m-d H:i:s'),
         ]);
         
         return back()->with('success','Course Sent to Departments Successfully.');

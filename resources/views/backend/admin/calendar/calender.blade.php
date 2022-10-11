@@ -20,7 +20,7 @@
                         @elseif($type == 'claim_modify_trainee_list')
                             <h5 class="text-dark font-weight-bold my-1 mr-5">Modified Trainee List</h5>
                         @elseif($type == 'training_course_list_cd')
-                            <h5 class="text-dark font-weight-bold my-1 mr-5">Modified Trainee List</h5>
+                            <h5 class="text-dark font-weight-bold my-1 mr-5">Pending Course List</h5>
                         @elseif($type == 'pending_trainee_list')
                             <h5 class="text-dark font-weight-bold my-1 mr-5">Pending Trainee List</h5>
                         @else
@@ -43,7 +43,7 @@
                                 @elseif($type == 'claim_modify_trainee_list')
                                     <a class="text-muted">Modified Trainee List</a>
                                 @elseif($type == 'training_course_list_cd')
-                                    <a class="text-muted">Modified Trainee List</a>
+                                    <a class="text-muted">Pending Course List</a>
                                 @elseif($type == 'pending_trainee_list')
                                     <a class="text-muted">Pending Trainee List</a>
                                 @else
@@ -80,7 +80,7 @@
                             @elseif($type != 'courseCalendar' && $type == 'claim_modify_trainee_list')
                                 <h3 class="card-title">Modified Trainee List</h3>
                             @elseif($type != 'courseCalendar' && $type == 'training_course_list_cd')
-                                <h3 class="card-title">Modified Trainee List</h3>
+                                <h3 class="card-title">Pending Course List</h3>
                             @elseif($type != 'courseCalendar' && $type == 'pending_trainee_list')
                                 <h3 class="card-title">Pending Trainee List</h3>
                             @else
