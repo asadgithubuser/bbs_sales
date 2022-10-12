@@ -130,6 +130,7 @@
                             </div>
                             
                             <div class="container mt-2 mb-2">
+                                
                                 <div class="card">
                                     <div class="card-header">
                                         Trainer detail
@@ -147,9 +148,12 @@
                                                 <tbody>
                                                     <tr>
                                                         <td>
-                                                            <img width="100px" src="{{asset('storage/trainers/'.$course->trainer->photo)}}" alt="{{$course->trainer->name}}">
+                                                            <img width="100px" src="{{asset('storage/trainers/'.$course->trainer->photo)}}" alt="">
                                                         </td>
-                                                        <td>{{ $course->trainer->name }}</td>
+                                                        <td>
+                                                        <?php $ii = 1; ?>
+                                                        @foreach(json_decode($course->trainer_id) as $id)  <strong>{{$ii++}}</strong>. {{App\Models\TrainingTrainer::find($id)->name }},<br> @endforeach</td>
+                                                        
                                                         <td>{{ $course->trainer->phone }}</td>
                                                         <td>{{ $course->trainer->email }}</td>
                                                         <td>{{ $course->trainer->address }}</td>

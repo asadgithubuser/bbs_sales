@@ -15,8 +15,7 @@
                 @php
                     $i = (($trainingCourseListDetails->currentPage() - 1) * $trainingCourseListDetails->perPage() + 1);
                 @endphp
-                 <?php  $i = 1;
-                        $ii = 1; ?>
+                  
                 @forelse ($trainingCourseListDetails as $tcld)
                     <input type="hidden" name="trainingCourseListIds[]" value="{{ $tcld->id }}">
                     <tr>
@@ -24,7 +23,7 @@
                         <td>{{ $tcld->user->first_name }}</td>
                         <td>{{ $tcld->user->department->name_en }}</td>
                         <td>{{ $tcld->user->designation->name_en }}</td>
-                        <td>{{ $tcld->course_training_list-> course->courseTitle->title  }}</td>
+                        <td>{{ $tcld->course_training_list->course->courseTitle->title  }}</td>
                         <td>{{ $course_hour[$tcld->user->id] }}</td>
                         <td>{{ $tcld->course_training_list->course->courseYear->name }}</td>
                         <td>

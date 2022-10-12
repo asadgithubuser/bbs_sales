@@ -86,9 +86,9 @@
                                             <div class="form-group row">
                                                 <label class="col-form-label col-lg-12 col-sm-12">Trainer</label>
                                                 <div class="col-lg-12 col-md-12 col-sm-12">
-                                                    <select name="trainer" id="trainer" class="form-control ajax-course-details-data-insert">
+                                                    <select name="trainer[]" id="trainer" class="form-control ajax-course-details-data-insert selectpicker" multiple data-live-search="true">
                                                         @foreach ($trainers as $trainer)
-                                                            <option value="{{ $trainer->id }}">{{ $trainer->name }}</option>
+                                                            <option value="{{ $trainer->id }}" >{{ $trainer->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>

@@ -73,11 +73,13 @@
                                                     class="text-danger">
                                                     *</span></label>
                                             <div class="col-lg-12 col-md-12 col-sm-12">
-                                                <select name="trainer_id" id="trainer_id" class="form-control ajax-courert">
-                                                @foreach($trainers as $trainer)
-                                                            <option value="{{ $trainer->id }}" @if($trainer->id == $course->trainer_id ) selected @endif value="1">{{ $trainer->name }}</option>
-                                                @endforeach
+                                                
+                                                <select name="trainer_id[]" id="trainer_id" class="form-control ajax-course-details-data-insert selectpicker" multiple data-live-search="true">
+    @foreach ($trainers as $trainer)
+        <option value="{{ $trainer->id }}" @if(in_array($trainer->id, json_decode($course->trainer_id))) selected @endif>{{ $trainer->name }}</option>
+    @endforeach
                                                 </select>
+
                                             </div>
                                         </div>
                                     </div>

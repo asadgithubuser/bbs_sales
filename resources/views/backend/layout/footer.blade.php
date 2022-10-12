@@ -45,6 +45,7 @@
 </div>
 <!--end::Demo Panel-->
 
+ 
 <!--begin::Global Config(global config for global JS scripts)-->
 @include('backend.partials.js')
 <!--end::Page Scripts-->

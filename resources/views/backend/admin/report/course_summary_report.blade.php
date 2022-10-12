@@ -99,8 +99,7 @@
                                                 <th>Course Name</th>
                                                 <!-- <th>Trainer Name</th> -->
                                                 <th>Fiscal Year</th>
-                                                <th>Month</th>
-                                                <th>Duration</th>
+                                                <th>Wing</th>
                                                 <th>Schedule</th>
                                                 <th>Course Hour</th>
                                                 <th>Trainee Type</th>
@@ -117,14 +116,15 @@
                                                     <?php if($course != null){ ?>
                                                         <tr>
                                                         
-                                                                <td> <span class="badge badge-success">{{$i++}}</span> </td>
+                                                            <td> <span class="badge badge-success">{{$i++}}</span> </td>
                                                             
-
                                                             <td>{{ $course->courseTitle->title  }}</td>
-                                                            <!-- <td>{{ $course->trainer->name }}</td> -->
+                                                            
                                                             <td>{{ $course->courseYear->name }}</td>
-                                                            <td>{{ $course->courseDuration->month }}</td>
-                                                            <td>{{ $course->courseDuration->duration }}</td>
+
+        
+
+            <td>@if(isset($course->courseListDetails->user->department) && $course->courseListDetails->user->department != null){{ $course->courseListDetails->user->department->name_en }}@endif</td>
                                                             <td>{{ $course->courseDuration->start_date }} - {{  $course->courseDuration->end_date }}</td>
                                                             <td>{{ $course->courseDuration->course_hour }}</td>
                                                             <td>{{ $course->courseDuration->trainee_type }}</td>
@@ -269,7 +269,7 @@
                                                             
 
                                                             <td>{{ $course->courseTitle->title  }}</td>
-                                                            <!-- <td>{{ $course->trainer->name }}</td> -->
+                                                           
                                                             <td>{{ $course->courseYear->name }}</td>
                                                             <td>{{ $course->courseDuration->month }}</td>
                                                             <td>{{ $course->courseDuration->duration }}</td>

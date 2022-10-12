@@ -43,7 +43,7 @@
                                 <td>{{ $tcld->user->first_name }}</td>
                                 <td>{{ $tcld->user->department->name_en }}</td>
                                 <td>{{ $tcld->user->designation->name_en }}</td>
-                                <td>{{ $tcld->course_training_list-> course->courseTitle->title  }}</td>
+                                <td>{{ $tcld->course_training_list->course->courseTitle->title  }}</td>
                                 <td>{{ $tcld->course_training_list->course->courseYear->name }}</td>
                                 <td>Batch-@if(isset($tcld->course_duration)){{ $tcld->course_duration->batch_no }} @endif</td>
                                 <td>@if(isset($tcld->course_curriculam)){{ $tcld->course_curriculam->subject_title }}@endif</td>

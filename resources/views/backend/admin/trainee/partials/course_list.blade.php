@@ -22,12 +22,15 @@
                     <tbody>
                         @php
                             $i = 1;
+                            
                         @endphp
                         @foreach ($trainingCourseDetails as $tcld)
+                        <?php $ii = 1; ?>
                                 <tr>
                                     <td>{{ $i++ }}</td>
-                                    <td>{{ $tcld->course_training_list-> course->courseTitle->title  }}</td>
-                                    <td>{{ $tcld->course_training_list->course->trainer->name }}</td>
+                                    <td>{{ $tcld->course_training_list->course->courseTitle->title  }}</td>
+                                     
+                                    <td>@foreach(json_decode($tcld->course_training_list->course->trainer_id) as $id) <strong>{{$ii++}}</strong>. {{App\Models\TrainingTrainer::find($id)->name }},<br> @endforeach</td>
                                     <td>{{ $tcld->course_training_list->course->courseYear->name }}</td>
                                     <td>{{ $tcld->course_training_list->course->courseDuration->month }}</td>
                                     <td>{{ $tcld->course_training_list->course->courseDuration->duration }}</td>

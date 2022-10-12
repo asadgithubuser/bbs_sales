@@ -80,7 +80,7 @@
                         @endif
 
                             <td>{{ $course->courseTitle->title  }}</td>
-                            <!-- <td>{{ $course->trainer->name }}</td> -->
+                            
                             <td>{{ $course->courseYear->name }}</td>
                             <td>{{ $course->courseDuration->month }}</td>
                             <td>{{ $course->courseDuration->duration }}</td>

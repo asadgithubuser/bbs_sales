@@ -18,9 +18,10 @@
             <tbody>
                 @php
                     $i = (($courses->currentPage() - 1) * $courses->perPage() + 1);
-
+                    
                 @endphp
                     @forelse ($courses as $course)
+                         <?php $ii = 1; ?>
                         <input type="hidden" name="items[]" value="{{ $course->id }}">
                         @if(isset($q))
                         <input type="hidden" name="fiscal_id" value="{{ $q }}">
@@ -28,7 +29,7 @@
                         <tr>
                             <td>{{ $i }}</td>
                             <td>{{ $course->courseTitle->title }}</td>
-                            <td>{{ $course->trainer ? $course->trainer->name : '' }}</td>
+                            <td>@foreach(json_decode($course->trainer_id) as $id) <strong>{{$ii++}}</strong>. {{App\Models\TrainingTrainer::find($id)->name }},<br> @endforeach</td>
                             <td>{{ $course->courseYear ?  $course->courseYear->name : ''}}</td>
                             <td>{{ $course->courseDuration->month }}</td>
                             <td>{{ $course->courseDuration->course_hour }}</td>

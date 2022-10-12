@@ -22,6 +22,7 @@
             @php
             $count = 0;
                 $i = (($calender->currentPage() - 1) * $calender->perPage() + 1);
+                
             @endphp
             @forelse ($calender as $cal)
                 <?php $count = 1 ?>
@@ -29,10 +30,12 @@
                     @if($cal->course->forward == 1)
                         <tr>
                             <td>{{ $i }}</td>
-                            <td>{{$cal->course ? $cal-> course->courseTitle->title  : '' }}</td>
+                            <td>{{$cal->course ? $cal->course->courseTitle->title  : '' }}</td>
                             <td>
                                 @if ($course = $cal->course)
-                                    {{ $course->trainer ? $course->trainer->name : '' }}
+                                 @foreach(json_decode($course->trainer_id) as $id)
+                                 <?php $ii = 1; ?>
+                                  <strong>{{$ii++}}</strong>. {{App\Models\TrainingTrainer::find($id)->name }},<br> @endforeach 
                                 @endif
                             </td>
                             <td>

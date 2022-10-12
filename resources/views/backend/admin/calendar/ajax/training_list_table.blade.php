@@ -17,15 +17,16 @@
             @php
                 $courseHour = App\Models\TemplateSetting::where('type', 'course_max_hours')->first()->service_id;
                 $i = (( $trainingCourseList->currentPage() - 1) * $trainingCourseList->perPage() + 1);
+                
             @endphp
             @forelse ($trainingCourseList as $trainingList)
+            <?php $ii = 1; ?>
                 @if(isset($trainingList->course) && $trainingList->course != null)
                     <tr>
                         <td>{{ $i }}</td>
-                        <td>{{ $trainingList->course ? $trainingList-> course->courseTitle->title  : '' }}</td>
-                        <td>
-                            {{ $trainingList->course ? $trainingList->course->trainer->name : '' }}
-                        </td>
+                        <td>{{ $trainingList->course ? $trainingList->course->courseTitle->title  : '' }}</td>
+ 
+                        <td>@foreach(json_decode($trainingList->course->trainer_id) as $id) <strong>{{$ii++}}</strong>. {{App\Models\TrainingTrainer::find($id)->name }},<br> @endforeach</td>
                         
                         <td>
                             {{ $trainingList->course ? $trainingList->course->courseYear->name : '' }}

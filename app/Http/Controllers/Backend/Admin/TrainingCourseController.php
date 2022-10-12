@@ -125,10 +125,11 @@ class TrainingCourseController extends Controller
      */
     public function store(Request $request)
     {
+
         $course = new TrainingCourse;
         $course->course_title_id = $request->title_id;
         $course->fiscal_year_id = $request->fiscal_year;
-        $course->trainer_id  = $request->trainer;
+        $course->trainer_id  = json_encode($request->trainer);
         $course->course_director_id = $request->director;
         $course->course_coordinator_id = $request->coordinator;
         $course->course_purpose = $request->purpose;
@@ -762,7 +763,7 @@ class TrainingCourseController extends Controller
         ]);
 
         $course = TrainingCourse::find($request->course_id);
-        $course->trainer_id  = $request->trainer_id;
+        $course->trainer_id  = json_encode($request->trainer_id);
         $course->save();
 
         $courseDuration = TrainingCourseDuration::where('course_id', $request->course_id)->update([
@@ -1179,14 +1180,20 @@ class TrainingCourseController extends Controller
         $courses = new TrainingCourse;
 
         if($department_id != null){
-            $departments = CourseTrainingList::where('status', 1)->pluck('department_id');
+            $departmentIds = CourseTrainingList::where('status', 1)->get();
+            
+            $courseIds = array();
+            foreach($departmentIds as $index => $value){
+ 
+                $dept_ids_array = json_decode($value->department_id, TRUE); 
+ 
+                if(in_array($department_id, $dept_ids_array)){
+                    array_push($courseIds, $value->course_id);
+                }
+            }
+ 
+            $courses = $courses->whereIn('id', $courseIds);  
 
-            dd($departments);
-
-
-
-
-            $courses = $courses->where('fiscal_year_id', $fiscal_id);    
         }
 
         if($fiscal_id != null){
@@ -1203,7 +1210,7 @@ class TrainingCourseController extends Controller
         $depertments = Department::where('status', 1)->get();
         $fiscal_all = FiscalYear::select('id', 'name')->get();
         $courses = $courses->latest()->paginate(25);
- 
+      
         return view('backend.admin.report.course_summary_report',[ 
             'courses' => $courses,
             'depertments' => $depertments,
